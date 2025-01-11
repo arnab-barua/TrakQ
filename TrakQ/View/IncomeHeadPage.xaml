@@ -5,19 +5,22 @@
              Title="Income Head">
 
     <VerticalStackLayout>
-        <Button Text="Create New" Clicked="OnCreateNewClicked" />
+        <Button Text="Create New" Clicked="OnCreateNewClicked" HorizontalOptions="Center" />
 
         <CollectionView ItemsSource="{Binding IncomeHeads}" Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="10" Margin="5">
-                        <HorizontalStackLayout>
-                            <VerticalStackLayout>
+                    <Border Padding="10" Margin="10">
+                        <FlexLayout Direction="Row">
+                            <VerticalStackLayout FlexLayout.Grow="1">
                                 <Label Text="{Binding IncomeHeadName}" FontSize="18" FontAttributes="Bold" />
                                 <Label Text="{Binding Note}" FontSize="14" />
                             </VerticalStackLayout>
-                            <Button Text="Edit" CommandParameter="{Binding .}" Clicked="OnEditClicked" />
-                        </HorizontalStackLayout>                        
+                            <Button Text="Edit"
+                                CommandParameter="{Binding .}"
+                                Clicked="OnEditClicked" 
+                                HorizontalOptions="End"/>
+                        </FlexLayout>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
