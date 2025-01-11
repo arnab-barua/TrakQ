@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TrakQ.View.IncomeHeadFormPage"
-             Title="{Binding PageTitle}">
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Entry Placeholder="Head Name" Text="{Binding CurrentIncomeHead.IncomeHeadName}" />
-            <Entry Placeholder="Note" Text="{Binding CurrentIncomeHead.Note}" />
-            
-            <Button Text="Save" Command="{Binding SaveCommand}" />
-        </VerticalStackLayout>
-    </ScrollView>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TrakQ.View.IncomeHeadFormPage"
+    xmlns:model="clr-namespace:TrakQ.Db.Data.Entities;assembly=TrakQ.Db"
+    xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    x:DataType="viewmodel:IncomeHeadFormViewModel"
+    Title="IncomeHeadFormWithVmPage">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Entry
+            Placeholder="Head Name"
+            Text="{Binding IncomeHead.IncomeHeadName}" />
+        
+        <Editor
+            Placeholder="Note"
+            HeightRequest="100"
+            Text="{Binding IncomeHead.Note}" />
+
+        <Button Text="Save" Command="{Binding SaveCommand}" />
+    </VerticalStackLayout>
 </ContentPage>

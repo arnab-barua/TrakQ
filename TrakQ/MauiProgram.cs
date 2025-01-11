@@ -24,11 +24,14 @@ public static class MauiProgram
 
         builder.Services.AddDbContext<AppDbContext>();
 
-        builder.Services.AddTransient<ExpenseHeadPage>();
         builder.Services.AddSingleton<ExpenseHeadService>();
 
-        builder.Services.AddTransient<IncomeHeadPage>();
         builder.Services.AddSingleton<IncomeHeadService>();
+        builder.Services.AddSingleton<IncomeHeadViewModel>();
+        builder.Services.AddTransient<IncomeHeadPage>();
+
+        builder.Services.AddSingleton<IncomeHeadFormViewModel>();
+        builder.Services.AddSingleton<IncomeHeadFormPage>();
 
         return builder.Build();
     }

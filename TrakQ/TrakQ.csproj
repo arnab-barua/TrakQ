@@ -81,6 +81,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\IncomeHeadFormPage.xaml.cs">
+	    <DependentUpon>IncomeHeadFormPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\IncomeHeadPage.xaml.cs">
+	    <DependentUpon>IncomeHeadPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="View\IncomeHeadFormPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

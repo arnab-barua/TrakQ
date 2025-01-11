@@ -3,65 +3,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using TrakQ.Db.Data.Entities;
 using TrakQ.Service;
 
 namespace TrakQ.ViewModel;
 
-internal class IncomeHeadFormViewModel : BindableObject
+[QueryProperty(nameof(IncomeHead), "IncomeHead")]
+public partial class IncomeHeadFormViewModel : BaseViewModel
 {
-    private readonly IncomeHeadService _incomeHeadService;   
-
-    public string PageTitle { get; set; }
-    public IncomeHead CurrentIncomeHead { get; set; }
-
-    public ICommand SaveCommand { get; }
-
+    private readonly IncomeHeadService _incomeHeadService;
 
     public IncomeHeadFormViewModel(IncomeHeadService incomeHeadService)
     {
         _incomeHeadService = incomeHeadService;
-        SaveCommand = new Command(async () => await SaveAsync());
     }
 
+    [ObservableProperty]
+    IncomeHead incomeHead = new();
 
-    public async Task InitializeAsync(IncomeHead? incomeHead)
+    [RelayCommand]
+    async Task SaveAsync()
     {
-        if (incomeHead == null)
+        if (IsBusy)
+            return;
+
+        try
         {
-            PageTitle = "Create Expense Head";
-            CurrentIncomeHead = new IncomeHead();
+            IsBusy = true;
+
+            bool isSuccess;
+            if (incomeHead.IncomeHeadId == 0)
+            {
+                isSuccess = await _incomeHeadService.CreateIncomeHeadAsync(incomeHead);
+            }
+            else
+            {
+                isSuccess = await _incomeHeadService.UpdateIncomeHeadAsync(incomeHead);
+            }
+
+            if (isSuccess)
+            {
+                await Shell.Current.GoToAsync(".."); // Navigate back
+            }
+
         }
-        else
+        catch (Exception ex)
         {
-            PageTitle = "Edit Expense Head";
-            CurrentIncomeHead = incomeHead;
+            Debug.WriteLine($"Unable to get monkeys: {ex.Message}");
+            await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
         }
 
-        OnPropertyChanged(nameof(PageTitle));
-        OnPropertyChanged(nameof(CurrentIncomeHead));
     }
 
-    private async Task SaveAsync()
-    {
-        bool isSuccess;
-        if (CurrentIncomeHead.IncomeHeadId == 0)
-        {
-            isSuccess = await _incomeHeadService.CreateIncomeHeadAsync(CurrentIncomeHead);
-        }
-        else
-        {
-            isSuccess = await _incomeHeadService.UpdateIncomeHeadAsync(CurrentIncomeHead);
-        }
-
-        if (isSuccess)
-        {
-            await Shell.Current.GoToAsync(".."); // Navigate back
-        }
-        else
-        {
-            await Application.Current.MainPage.DisplayAlert("Error", "Failed to save the expense head.", "OK");
-        }
-    }
 }

@@ -5,11 +5,9 @@ namespace TrakQ
 {
     public partial class App : Application
     {
-        //private readonly AppDbContext _context;
         public App(AppDbContext context)
         {
             InitializeComponent();
-            //_context = context;
             context.Database.Migrate();
         }
 
