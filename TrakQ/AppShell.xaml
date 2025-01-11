@@ -30,4 +30,10 @@
         ContentTemplate="{DataTemplate views:IncomeHeadPage}"
         Route="IncomeHeadPage" />
 
+    <ShellContent
+        Title="Incomes"
+        ContentTemplate="{DataTemplate views:IncomePage}"
+        Route="IncomePage" />
+    
+
 </Shell>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Fonts;
+using Microsoft.Extensions.Logging;
 using TrakQ.Db;
 using TrakQ.Service;
 using TrakQ.View;
@@ -26,12 +27,23 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ExpenseHeadService>();
 
+
+        // Income head service, page, viewmodels.
         builder.Services.AddSingleton<IncomeHeadService>();
         builder.Services.AddSingleton<IncomeHeadViewModel>();
         builder.Services.AddTransient<IncomeHeadPage>();
 
         builder.Services.AddSingleton<IncomeHeadFormViewModel>();
         builder.Services.AddSingleton<IncomeHeadFormPage>();
+
+
+        // Income service, page, viewmodels.
+        builder.Services.AddSingleton<IncomeService>();
+        builder.Services.AddSingleton<IncomeViewModel>();
+        builder.Services.AddTransient<IncomePage>();
+
+        builder.Services.AddSingleton<IncomeFormViewModel>();
+        builder.Services.AddSingleton<IncomeFormPage>();
 
         return builder.Build();
     }

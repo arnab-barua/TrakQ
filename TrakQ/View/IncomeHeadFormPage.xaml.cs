@@ -6,5 +6,5 @@ public partial class IncomeHeadFormPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
-	}
+    }
 }
