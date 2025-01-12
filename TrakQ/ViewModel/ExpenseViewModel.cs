@@ -1,5 +1,6 @@
 ﻿using TrakQ.Dto;
 using TrakQ.Service;
+using TrakQ.View;
 
 namespace TrakQ.ViewModel;
 public partial class ExpenseViewModel : BaseViewModel
@@ -66,14 +67,13 @@ public partial class ExpenseViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    async Task GoToDetails(IncomeViewDto? item)
+    async Task GoToDetails(ExpenditureDto? item)
     {
-        if (item == null)
-            item = new IncomeViewDto();
+        item ??= new ExpenditureDto();
 
-        //await Shell.Current.GoToAsync(nameof(IncomeFormPage), true, new Dictionary<string, object>
-        //{
-        //    {"Income", item }
-        //});
+        await Shell.Current.GoToAsync(nameof(ExpenseFormPage), true, new Dictionary<string, object>
+        {
+            {"Expenditure", item }
+        });
     }
 }

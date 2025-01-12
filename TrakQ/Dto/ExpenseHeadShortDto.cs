@@ -2,7 +2,7 @@
 
 public record ExpenseHeadShortDto
 {
-    public int Id { get; init; }
-    public string HeadName { get; init; } = string.Empty;
+    public int Id { get; set; } = 0;
+    public string HeadName { get; set; } = string.Empty;
     public decimal? FixedAmount { get; init; }
 }

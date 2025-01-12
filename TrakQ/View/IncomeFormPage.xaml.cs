@@ -9,16 +9,10 @@ public partial class IncomeFormPage : ContentPage
         BindingContext = viewModel;
         viewModel.GetAllIncomeHeadsCommand.Execute(this);
 
-        //Loaded += OnPageLoaded;
         Appearing += OnAppearing;
     }
 
     private void OnAppearing(object? sender, EventArgs e)
-    {
-        (BindingContext as IncomeFormViewModel)?.SetIncomeHead();
-    }
-
-    private async void OnPageLoaded(object sender, EventArgs e)
     {
         (BindingContext as IncomeFormViewModel)?.SetIncomeHead();
     }

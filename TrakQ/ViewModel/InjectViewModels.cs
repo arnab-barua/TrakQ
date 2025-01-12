@@ -7,6 +7,7 @@ public static class InjectViewModels
         services.AddSingleton<ExpenseHeadViewModel>();
         
         services.AddSingleton<ExpenseViewModel>();
+        services.AddSingleton<ExpenseFormViewModel>();
         
         services.AddSingleton<IncomeHeadViewModel>();
         services.AddSingleton<IncomeHeadFormViewModel>();

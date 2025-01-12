@@ -25,9 +25,9 @@
                         <DataTemplate x:DataType="model:ExpenditureDto">
                             <Border>
                                 <Border.GestureRecognizers>
-                                    <!--<TapGestureRecognizer 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:IncomeFormViewModel, Path=GoToDetailsCommand}"
-                                        CommandParameter="{Binding .}"/>-->
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:ExpenseFormViewModel, Path=GoToDetailsCommand}"
+                                        CommandParameter="{Binding .}"/>
                                 </Border.GestureRecognizers>
                                 <Grid Padding="10" ColumnDefinitions="*, Auto">
                                     <VerticalStackLayout
