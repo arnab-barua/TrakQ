@@ -6,7 +6,7 @@ namespace TrakQ.ViewModel;
 public partial class ExpenseViewModel : BaseViewModel
 {
     private readonly ExpenditureService _expenditureService;
-    public ObservableCollection<ExpenditureDto> Expenses { get; set; } = [];
+    public ObservableCollection<ExpensesByDay> Expenses { get; set; } = [];
 
 
 
@@ -37,10 +37,20 @@ public partial class ExpenseViewModel : BaseViewModel
             IsBusy = true;
             var items = await _expenditureService.GetMonthDataAsync(Year, Month);
 
+            List<ExpensesByDay> newItems = items.GroupBy(a => a.ExpenditureDate)
+                .Select(gr => new ExpensesByDay
+                {
+                    ExpenditureDate = gr.Key,
+                    Expenses = [.. gr],
+                    TotalAmount = gr.Sum(a => a.Amount)
+                })
+                .OrderBy(a => a.ExpenditureDate)
+                .ToList();
+
             if (Expenses.Count != 0)
                 Expenses.Clear();
 
-            foreach (var item in items)
+            foreach (var item in newItems)
             {
                 Expenses.Add(item);
             }
