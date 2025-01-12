@@ -4,7 +4,7 @@ using TrakQ.Db.Data.Entities;
 using TrakQ.Dto;
 
 namespace TrakQ.Service;
-public class IncomeService
+public sealed class IncomeService
 {
     private readonly AppDbContext _dbContext;
 
@@ -13,7 +13,7 @@ public class IncomeService
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<IncomeViewDto>> GetIncomesAsync(int year, int month)
+    public async Task<List<IncomeViewDto>> GetIncomesAsync(int year, int month)
     {
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
@@ -30,7 +30,7 @@ public class IncomeService
                                 IncomeId = a.IncomeId,
                                 IncomeHeadId = a.IncomeHeadId,
                                 IncomeHeadName = a.IncomeHead.IncomeHeadName,
-                                IncomeDate = a.IncomeDate.Date,
+                                IncomeDate = a.IncomeDate,
                                 Amount = a.Amount,
                                 Remark = a.Remark
                             })
@@ -38,7 +38,7 @@ public class IncomeService
     }
 
 
-    public async Task<decimal> GetTotalMonthIncomeAsync(Int16 year, byte month)
+    public async Task<decimal> GetTotalMonthIncomeAsync(int year, int month)
     {
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);

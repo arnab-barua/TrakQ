@@ -3,7 +3,7 @@ using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 
 namespace TrakQ.Service;
-public class IncomeHeadService
+public sealed class IncomeHeadService
 {
     private readonly AppDbContext _dbContext;
 

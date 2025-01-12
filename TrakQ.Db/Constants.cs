@@ -1,7 +1,7 @@
 ﻿namespace TrakQ.Db;
 public static class Constants
 {
-    public const string DatabaseFilename = "TrakQ.db";
+    public const string DatabaseFilename = "TrakQ.db3";
 
     //public const SQLite.SQLiteOpenFlags Flags =
     //    // open the database in read/write mode
@@ -11,6 +11,9 @@ public static class Constants
     //    // enable multi-threaded database access
     //    SQLite.SQLiteOpenFlags.SharedCache;
 
+    public static string ApplicationPath =>
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "trakq");
+
     public static string DatabasePath =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DatabaseFilename);
+        Path.Combine(ApplicationPath, DatabaseFilename);
 }

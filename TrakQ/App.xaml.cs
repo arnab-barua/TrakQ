@@ -8,6 +8,10 @@ namespace TrakQ
         public App(AppDbContext context)
         {
             InitializeComponent();
+            if(!Directory.Exists(Constants.ApplicationPath))
+            {
+                Directory.CreateDirectory(Constants.ApplicationPath);
+            }
             context.Database.Migrate();
         }
 
