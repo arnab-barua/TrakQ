@@ -13,7 +13,7 @@ public sealed class IncomeService
         _dbContext = dbContext;
     }
 
-    public async Task<List<IncomeViewDto>> GetIncomesAsync(int year, int month)
+    public async Task<List<IncomeViewDto>> GetMonthDataAsync(int year, int month)
     {
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);

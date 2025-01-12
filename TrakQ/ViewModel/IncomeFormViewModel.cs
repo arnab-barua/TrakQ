@@ -14,6 +14,7 @@ public partial class IncomeFormViewModel : BaseViewModel
 
     public IncomeFormViewModel(IncomeService incomeService, IncomeHeadService incomeHeadService)
     {
+        Title = "Add/update income";
         _incomeService = incomeService;
         _incomeHeadService = incomeHeadService;
     }

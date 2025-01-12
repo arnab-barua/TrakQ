@@ -6,7 +6,7 @@
     xmlns:model="clr-namespace:TrakQ.Db.Data.Entities;assembly=TrakQ.Db"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:IncomeHeadFormViewModel"
-    Title="IncomeHeadFormWithVmPage">
+    Title="{Binding Title}">
 
     <VerticalStackLayout Padding="20" Spacing="15">
         <Entry

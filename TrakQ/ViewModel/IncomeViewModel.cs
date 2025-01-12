@@ -18,7 +18,7 @@ public partial class IncomeViewModel : BaseViewModel
 
     public IncomeViewModel(IncomeService incomeService)
     {
-        Title = "Income Heads";
+        Title = "Incomes";
         _incomeService = incomeService;
     }
 
@@ -41,7 +41,7 @@ public partial class IncomeViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            var items = await _incomeService.GetIncomesAsync(Year, Month);
+            var items = await _incomeService.GetMonthDataAsync(Year, Month);
 
             if (Incomes.Count != 0)
                 Incomes.Clear();

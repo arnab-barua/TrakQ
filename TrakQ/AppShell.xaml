@@ -39,4 +39,9 @@
         Title="Expense heads"
         ContentTemplate="{DataTemplate views:ExpenseHeadPage}"
         Route="ExpenseHeadPage" />
+
+    <ShellContent
+        Title="Expenses"
+        ContentTemplate="{DataTemplate views:ExpensePage}"
+        Route="ExpensePage" />
 </Shell>

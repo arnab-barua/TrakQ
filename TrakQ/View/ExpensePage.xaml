@@ -2,10 +2,10 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="TrakQ.View.IncomePage"
+    x:Class="TrakQ.View.ExpensePage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
-    x:DataType="viewmodel:IncomeViewModel"
+    x:DataType="viewmodel:ExpenseViewModel"
     Title="{Binding Title}">
 
     <Grid
@@ -19,15 +19,15 @@
             IsRefreshing="{Binding IsRefreshing}">
             <ContentView>
                 <CollectionView
-                    ItemsSource="{Binding Incomes}"
+                    ItemsSource="{Binding Expenses}"
                     SelectionMode="None">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:IncomeViewDto">                            
+                        <DataTemplate x:DataType="model:ExpenditureDto">
                             <Border>
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:IncomeViewModel}}, x:DataType=viewmodel:IncomeFormViewModel, Path=GoToDetailsCommand}"
-                                    CommandParameter="{Binding .}"/>
+                                    <!--<TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:IncomeFormViewModel, Path=GoToDetailsCommand}"
+                                        CommandParameter="{Binding .}"/>-->
                                 </Border.GestureRecognizers>
                                 <Grid Padding="10" ColumnDefinitions="*, Auto">
                                     <VerticalStackLayout
@@ -36,11 +36,11 @@
                                         Padding="10">
                                         <Label
                                             FontSize="Medium"
-                                            Text="{Binding IncomeHeadName}" />
+                                            Text="{Binding ExpenditureHeadText}" />
                                         <Label
                                             Text="{Binding Remark}" />
                                     </VerticalStackLayout>
-                                    
+
                                     <VerticalStackLayout
                                         Grid.Column="1"
                                         VerticalOptions="Center"
@@ -48,14 +48,14 @@
                                         <Label
                                             HorizontalTextAlignment="End"
                                             FontSize="Caption"
-                                            Text="{Binding IncomeDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
+                                            Text="{Binding ExpenditureDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
                                         <Label
                                             HorizontalTextAlignment="End"
                                             FontSize="Medium"
                                             Text="{Binding Amount, StringFormat='৳ {0:F2}'}" />
                                     </VerticalStackLayout>
                                 </Grid>
-                            </Border>                         
+                            </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

@@ -6,7 +6,7 @@
     xmlns:model="clr-namespace:TrakQ.Db.Data.Entities;assembly=TrakQ.Db"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:IncomeHeadViewModel"
-    Title="Income Heads">
+    Title="{Binding Title}">
 
     <Grid
         ColumnDefinitions="*,*"
