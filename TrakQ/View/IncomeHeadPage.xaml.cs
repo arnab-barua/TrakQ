@@ -6,6 +6,11 @@ public partial class IncomeHeadPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
-        viewModel.GetAllCommand.Execute(this);
-	}
+        Appearing += OnAppearing;
+    }
+
+    private void OnAppearing(object? sender, EventArgs e)
+    {
+        (BindingContext as IncomeHeadViewModel)?.GetAllCommand.Execute(sender);
+    }
 }

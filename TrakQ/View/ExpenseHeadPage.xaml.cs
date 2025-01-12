@@ -6,6 +6,11 @@ public partial class ExpenseHeadPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
-        viewModel.GetAllCommand.Execute(this);
+        Appearing += OnAppearing;
+    }
+
+    private void OnAppearing(object? sender, EventArgs e)
+    {
+        (BindingContext as ExpenseHeadViewModel)?.GetAllCommand.Execute(sender);
     }
 }
