@@ -15,10 +15,15 @@ public sealed class ExpenseHeadService
 
     public async Task<List<ExpenseHeadDto>> GetAllAsync()
     {
-        return await _context.ExpenditureHeads
-            .Where(a => a.ParentHeadId == 0)
+        var allRows = await _context.ExpenditureHeads
             .OrderBy(a => a.ExpenditureHeadId)
             .AsNoTracking()
+            .ToListAsync();
+
+
+        return allRows
+            .Where(a => a.ParentHeadId == 0)
+            .OrderBy(a => a.ExpenditureHeadId)
             .Select(L1 => new ExpenseHeadDto
             {
                 Id = L1.ExpenditureHeadId,
@@ -28,48 +33,48 @@ public sealed class ExpenseHeadService
                 Budget = L1.Budget,
                 FixedAmount = L1.FixedAmount,
 
-                ChildHeads = _context.ExpenditureHeads
-                                    .Where(b => b.ParentHeadId == L1.ExpenditureHeadId)
-                                    .Select(L2 => new ExpenseHeadDto
-                                    {
-                                        Id = L2.ExpenditureHeadId,
-                                        HeadName = L2.HeadName,
-                                        ParentHeadId = L2.ParentHeadId,
-                                        ParentName = L1.HeadName,
-                                        Note = L2.Note,
-                                        Budget = L2.Budget,
-                                        FixedAmount = L2.FixedAmount,
+                ChildHeads = allRows
+                            .Where(b => b.ParentHeadId == L1.ExpenditureHeadId)
+                            .Select(L2 => new ExpenseHeadDto
+                            {
+                                Id = L2.ExpenditureHeadId,
+                                HeadName = L2.HeadName,
+                                ParentHeadId = L2.ParentHeadId,
+                                ParentName = L1.HeadName,
+                                Note = L2.Note,
+                                Budget = L2.Budget,
+                                FixedAmount = L2.FixedAmount,
 
-                                        ChildHeads = _context.ExpenditureHeads
-                                                        .Where(L3 => L3.ParentHeadId == L2.ExpenditureHeadId)
-                                                        .Select(L3 => new ExpenseHeadDto
+                                ChildHeads = allRows
+                                            .Where(L3 => L3.ParentHeadId == L2.ExpenditureHeadId)
+                                            .Select(L3 => new ExpenseHeadDto
+                                            {
+                                                Id = L3.ExpenditureHeadId,
+                                                HeadName = L3.HeadName,
+                                                ParentHeadId = L3.ParentHeadId,
+                                                ParentName = L2.HeadName,
+                                                Note = L3.Note,
+                                                Budget = L3.Budget,
+                                                FixedAmount = L3.FixedAmount,
+                                                ChildHeads = allRows
+                                                        .Where(L4 => L4.ParentHeadId == L3.ExpenditureHeadId)
+                                                        .Select(L4 => new ExpenseHeadDto
                                                         {
-                                                            Id = L3.ExpenditureHeadId,
-                                                            HeadName = L3.HeadName,
-                                                            ParentHeadId = L3.ParentHeadId,
-                                                            ParentName = L2.HeadName,
-                                                            Note = L3.Note,
-                                                            Budget = L3.Budget,
-                                                            FixedAmount = L3.FixedAmount,
-                                                            ChildHeads = _context.ExpenditureHeads
-                                                                    .Where(L4 => L4.ParentHeadId == L3.ExpenditureHeadId)
-                                                                    .Select(L4 => new ExpenseHeadDto
-                                                                    {
-                                                                        Id = L4.ExpenditureHeadId,
-                                                                        HeadName = L4.HeadName,
-                                                                        ParentHeadId = L4.ParentHeadId,
-                                                                        ParentName = L3.HeadName,
-                                                                        Note = L4.Note,
-                                                                        Budget = L4.Budget,
-                                                                        FixedAmount = L4.FixedAmount
-                                                                    })
-                                                                    .ToList()
+                                                            Id = L4.ExpenditureHeadId,
+                                                            HeadName = L4.HeadName,
+                                                            ParentHeadId = L4.ParentHeadId,
+                                                            ParentName = L3.HeadName,
+                                                            Note = L4.Note,
+                                                            Budget = L4.Budget,
+                                                            FixedAmount = L4.FixedAmount
                                                         })
-                                                        .ToList(),
-                                    })
-                                    .ToList()
+                                                        .ToList()
+                                            })
+                                            .ToList(),
+                            })
+                            .ToList()
             })
-            .ToListAsync();
+            .ToList();
     }
 
 
@@ -151,5 +156,16 @@ public sealed class ExpenseHeadService
 
         await _context.SaveChangesAsync();
         return expenseHeadForm.Id;
+    }
+
+    public async Task<bool> ImportBulkDataAsync(FormattableString importDataAsString)
+    {
+        // Delete existing data from table.
+        int deletedRows = await _context.Database.ExecuteSqlAsync($"DELETE FROM ExpenditureHeads");
+
+        // Execute batch query to insert data.
+        int insertedRows = await _context.Database.ExecuteSqlAsync(importDataAsString);
+
+        return true;
     }
 }

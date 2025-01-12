@@ -25,19 +25,9 @@ public static class MauiProgram
 
         builder.Services.AddDbContext<AppDbContext>();
 
-
         builder.Services.AddDomainServices();
         builder.Services.AddViewModels();
-
-
-        // Income head page.
-        builder.Services.AddTransient<IncomeHeadPage>();
-        builder.Services.AddSingleton<IncomeHeadFormPage>();
-
-
-        // Income pages.
-        builder.Services.AddTransient<IncomePage>();
-        builder.Services.AddSingleton<IncomeFormPage>();
+        builder.Services.AddViews();
 
         return builder.Build();
     }

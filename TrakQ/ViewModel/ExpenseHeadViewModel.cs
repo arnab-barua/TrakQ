@@ -54,16 +54,68 @@ public partial class ExpenseHeadViewModel : BaseViewModel
 
     }
 
-
     [RelayCommand]
-    async Task CreateNew()
+    async Task PickFile()
     {
-        await Shell.Current.DisplayAlert("TODO", "SQL data import", "OK");
+        if (IsBusy)
+            return;
+
+
+        var customFileType = new FilePickerFileType(
+                   new Dictionary<DevicePlatform, IEnumerable<string>>
+                   {
+                       { DevicePlatform.iOS, ["public.text"] }, // UTType values  
+                       { DevicePlatform.Android, ["text/plain"] }, // MIME type  
+                       { DevicePlatform.WinUI, [".txt"] }, // file extension  
+                       { DevicePlatform.macOS, ["txt"] },
+                   });
+
+        PickOptions pickOptions = new()
+        {
+            PickerTitle = "Pick sql file",
+            FileTypes = customFileType
+        };
+
+        var sqlFile = await FilePicker.Default.PickAsync(pickOptions);
+
+        try
+        {
+            IsBusy = true;
+
+            var rawQuery = await ReadLinesAsync(sqlFile);
+            if (!string.IsNullOrEmpty(rawQuery))
+            {
+                var formattedQuery = FormattableStringFactory.Create(rawQuery);
+                await _expenseHeadService.ImportBulkDataAsync(formattedQuery);
+            }
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+            IsRefreshing = false;
+        }
     }
 
-    [RelayCommand]
-    async Task GoToDetails(IncomeHead? item)
+    public async Task<string> ReadLinesAsync(FileResult? file)
     {
-        await Shell.Current.DisplayAlert("TODO", "SQL data import", "OK");
+        if(file is null)
+        {
+            return string.Empty;
+        }
+        // Open the source file  
+        using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync(file.FullPath);
+        using StreamReader sr = new(fileStream);
+
+        string line;
+        string AllOfTexts = "";
+        while ((line = sr.ReadLine()) != null)
+        {
+            AllOfTexts += Environment.NewLine + line;
+        }
+        return AllOfTexts;
     }
 }

@@ -8,6 +8,7 @@ namespace TrakQ
         {
             InitializeComponent();
 
+            Routing.RegisterRoute(nameof(ExpenseHeadPage), typeof(ExpenseHeadPage));
             Routing.RegisterRoute(nameof(IncomeHeadPage), typeof(IncomeHeadPage));
             Routing.RegisterRoute(nameof(IncomeHeadFormPage), typeof(IncomeHeadFormPage));
             Routing.RegisterRoute(nameof(IncomePage), typeof(IncomePage));

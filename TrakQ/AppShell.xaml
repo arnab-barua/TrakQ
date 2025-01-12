@@ -34,6 +34,9 @@
         Title="Incomes"
         ContentTemplate="{DataTemplate views:IncomePage}"
         Route="IncomePage" />
-    
 
+    <ShellContent
+        Title="Expense heads"
+        ContentTemplate="{DataTemplate views:ExpenseHeadPage}"
+        Route="ExpenseHeadPage" />
 </Shell>
