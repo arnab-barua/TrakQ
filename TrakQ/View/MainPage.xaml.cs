@@ -4,10 +4,10 @@ public partial class MainPage : ContentPage
 {
     int count = 0;
 
-    public MainPage()
-    {
-        Title = "Dashboard";
+    public MainPage(MainPageViewModel viewModel)
+    {        
         InitializeComponent();
+        BindingContext = viewModel;
     }
 
     private void OnCounterClicked(object sender, EventArgs e)

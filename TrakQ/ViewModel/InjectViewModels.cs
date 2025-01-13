@@ -4,6 +4,8 @@ public static class InjectViewModels
 {
     public static IServiceCollection AddViewModels(this IServiceCollection services)
     {
+        services.AddSingleton<MainPageViewModel>();
+        
         services.AddSingleton<ExpenseHeadViewModel>();
         
         services.AddSingleton<ExpenseViewModel>();

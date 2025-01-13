@@ -12,7 +12,7 @@ public static class Constants
     //    SQLite.SQLiteOpenFlags.SharedCache;
 
     public static string ApplicationPath =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "trakq");
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "trakq");
 
     public static string DatabasePath =>
         Path.Combine(ApplicationPath, DatabaseFilename);

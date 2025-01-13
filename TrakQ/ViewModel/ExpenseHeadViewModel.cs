@@ -74,48 +74,35 @@ public partial class ExpenseHeadViewModel : BaseViewModel
         {
             PickerTitle = "Pick sql file",
             FileTypes = customFileType
-        };
-
-        var sqlFile = await FilePicker.Default.PickAsync(pickOptions);
+        };        
 
         try
         {
             IsBusy = true;
+            var sqlFile = await FilePicker.Default.PickAsync(pickOptions);
 
-            var rawQuery = await ReadLinesAsync(sqlFile);
-            if (!string.IsNullOrEmpty(rawQuery))
+            if (sqlFile is not null)
             {
-                var formattedQuery = FormattableStringFactory.Create(rawQuery);
-                await _expenseHeadService.ImportBulkDataAsync(formattedQuery);
-            }
+                var fileStream = await sqlFile.OpenReadAsync();
+                using var reader = new StreamReader(fileStream);
+                var rawQuery = await reader.ReadToEndAsync();
+
+                if (!string.IsNullOrEmpty(rawQuery))
+                {
+                    var formattedQuery = FormattableStringFactory.Create(rawQuery);
+                    await _expenseHeadService.ImportBulkDataAsync(formattedQuery);
+                }
+            }            
         }
         catch (Exception ex)
         {
-            await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
+            Debug.WriteLine($"Unable to save income: {ex.StackTrace}");
+            await Shell.Current.DisplayAlert("Error!", ex.Message + ex.StackTrace, "OK");
         }
         finally
         {
             IsBusy = false;
             IsRefreshing = false;
         }
-    }
-
-    public async Task<string> ReadLinesAsync(FileResult? file)
-    {
-        if(file is null)
-        {
-            return string.Empty;
-        }
-        // Open the source file  
-        using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync(file.FullPath);
-        using StreamReader sr = new(fileStream);
-
-        string line;
-        string AllOfTexts = "";
-        while ((line = sr.ReadLine()) != null)
-        {
-            AllOfTexts += Environment.NewLine + line;
-        }
-        return AllOfTexts;
     }
 }

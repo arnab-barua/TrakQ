@@ -74,7 +74,7 @@ public partial class IncomeHeadViewModel : BaseViewModel
             }
 
             // Test-Datei schreiben
-            File.WriteAllText(Path.Combine(ApplicationDataDirectory, filename), "some text ApplicationDataDirectory");
+            File.WriteAllText(Path.Combine(ApplicationDataDirectory, "trakq", filename), "some text ApplicationDataDirectory");
         }
         catch (Exception ex)
         {
@@ -90,7 +90,7 @@ public partial class IncomeHeadViewModel : BaseViewModel
             }
 
             // Test-Datei schreiben
-            File.WriteAllText(Path.Combine(LocalApplicationDataDirectory, filename), "some text LocalApplicationDataDirectory");
+            File.WriteAllText(Path.Combine(LocalApplicationDataDirectory, "trakq", filename), "some text LocalApplicationDataDirectory");
         }
         catch (Exception ex)
         {
@@ -107,7 +107,7 @@ public partial class IncomeHeadViewModel : BaseViewModel
             }
 
             // Test-Datei schreiben
-            File.WriteAllText(Path.Combine(CommonDocumentsDirectory, filename), "some text CommonDocumentsDirectory");
+            File.WriteAllText(Path.Combine(CommonDocumentsDirectory, "trakq", filename), "some text CommonDocumentsDirectory");
         }
         catch (Exception ex)
         {
