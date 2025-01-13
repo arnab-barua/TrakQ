@@ -52,9 +52,7 @@
             Grid.Row="1"
             Grid.Column="1"
             Margin="8"
-            Command="{Binding PickFileCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Import data" />
+            Text="Empty button" />
 
 
         <ActivityIndicator

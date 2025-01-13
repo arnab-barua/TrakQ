@@ -10,6 +10,8 @@ public static class DependencyInjection
         services.AddSingleton<IncomeHeadService>();
         services.AddSingleton<IncomeService>();
 
+        services.AddSingleton<ImportExportService>();
+
         return services;
     }
 }

@@ -40,6 +40,12 @@
                 Text="Request permission" 
                 HorizontalOptions="Fill"
                 Command="{Binding RequestPermissionCommand}" />
+
+            <Button                
+                HorizontalOptions="Fill"
+                Command="{Binding PickFileCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                Text="Import data" />
         </VerticalStackLayout>
     </ScrollView>
 

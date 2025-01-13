@@ -157,15 +157,4 @@ public sealed class ExpenseHeadService
         await _context.SaveChangesAsync();
         return expenseHeadForm.Id;
     }
-
-    public async Task<bool> ImportBulkDataAsync(FormattableString importDataAsString)
-    {
-        // Delete existing data from table.
-        int deletedRows = await _context.Database.ExecuteSqlAsync($"DELETE FROM ExpenditureHeads");
-
-        // Execute batch query to insert data.
-        int insertedRows = await _context.Database.ExecuteSqlAsync(importDataAsString);
-
-        return true;
-    }
 }
