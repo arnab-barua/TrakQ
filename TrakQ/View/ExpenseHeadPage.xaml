@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TrakQ.View.ExpenseHeadPage"
+    xmlns:model="clr-namespace:TrakQ.Dto"
+    xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    x:DataType="viewmodel:ExpenseHeadViewModel"
+    Title="{Binding Title}">
+
+    <Grid
+        ColumnDefinitions="*,*"
+        ColumnSpacing="5"
+        RowDefinitions="*,Auto"
+        RowSpacing="0">
+        <RefreshView
+            Grid.ColumnSpan="2"
+            Command="{Binding GetAllCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <ContentView>
+                <CollectionView
+                    ItemsSource="{Binding ExpenseHeads}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ExpenseHeadDto">
+                            <Grid Padding="10">
+                                <Border>                                    
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        VerticalOptions="Center"
+                                        Padding="10">
+                                        <Label  Text="{Binding HeadName}" />
+                                        <Label  Text="{Binding Note}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ContentView>
+        </RefreshView>
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="8"
+            Command="{Binding GetAllCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Text="Get All" />
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8"
+            Text="Empty button" />
+
+
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource Primary}"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

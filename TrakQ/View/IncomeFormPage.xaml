@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TrakQ.View.IncomeFormPage"
+    xmlns:model="clr-namespace:TrakQ.Dto"
+    xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    x:DataType="viewmodel:IncomeFormViewModel"
+    Title="{Binding Title}">
+
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto,*"
+        RowSpacing="5"
+        Padding="10">
+        <VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
+            <Picker
+                x:Name="IncomeHeadId"
+                SelectedItem="{Binding SelectedIncomeHead}"
+                ItemsSource="{Binding IncomeHeads}"
+                ItemDisplayBinding="{Binding IncomeHeadName}"
+                Title="IncomeHeadId"/>
+
+            <DatePicker HorizontalOptions="Fill" Date="{Binding Income.IncomeDate}" />
+
+            <Entry
+                Placeholder="Amount"
+                Keyboard="Numeric"
+                Text="{Binding Income.Amount}" />
+
+            <Editor
+                Placeholder="Note"
+                HeightRequest="100"
+                Text="{Binding Income.Remark}" />
+
+
+        </VerticalStackLayout>
+
+        <Button
+            Grid.Row="1"
+            Text="Save"
+            HorizontalOptions="Center"
+            VerticalOptions="End"            
+            Padding="20"
+            Command="{Binding SaveCommand}" />
+    </Grid>    
+</ContentPage>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TrakQ.View.IncomePage"
+    xmlns:model="clr-namespace:TrakQ.Dto"
+    xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    x:DataType="viewmodel:IncomeViewModel"
+    Title="{Binding Title}">
+
+    <Grid
+        ColumnDefinitions="*,*"
+        ColumnSpacing="5"
+        RowDefinitions="*,Auto"
+        RowSpacing="0">
+        <RefreshView
+            Grid.ColumnSpan="2"
+            Command="{Binding GetAllCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <ContentView>
+                <CollectionView
+                    ItemsSource="{Binding Incomes}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:IncomeViewDto">                            
+                            <Border>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:IncomeViewModel}}, x:DataType=viewmodel:IncomeFormViewModel, Path=GoToDetailsCommand}"
+                                    CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <Grid Padding="10" ColumnDefinitions="*, Auto">
+                                    <VerticalStackLayout
+                                        Grid.Column="0"
+                                        VerticalOptions="Center"
+                                        Padding="10">
+                                        <Label
+                                            FontSize="Medium"
+                                            Text="{Binding IncomeHeadName}" />
+                                        <Label
+                                            Text="{Binding Remark}" />
+                                    </VerticalStackLayout>
+                                    
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        VerticalOptions="Center"
+                                        Padding="10">
+                                        <Label
+                                            HorizontalTextAlignment="End"
+                                            FontSize="Caption"
+                                            Text="{Binding IncomeDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
+                                        <Label
+                                            HorizontalTextAlignment="End"
+                                            FontSize="Medium"
+                                            Text="{Binding Amount, StringFormat='৳ {0:F2}'}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>                         
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ContentView>
+        </RefreshView>
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="8"
+            Command="{Binding GetAllCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Text="Get All" />
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8"
+            Command="{Binding CreateNewCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Text="Create new" />
+
+
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource Primary}"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentPage>
