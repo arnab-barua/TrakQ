@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TrakQ.View.MonthSummeryPage"
+    xmlns:model="clr-namespace:TrakQ.Dto"
+    xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    x:DataType="viewmodel:MonthSummeryPageViewModel"
+    Title="{Binding Title}">
+
+    <Grid
+        ColumnDefinitions="*,*"
+        ColumnSpacing="5"
+        RowDefinitions="*,Auto"
+        RowSpacing="0">
+        <RefreshView
+            Grid.ColumnSpan="2"
+            Command="{Binding GetAllCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <ContentView>
+                <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, *, *, *, *, *, *">
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        FontSize="Medium"
+                        Text="Opening balance" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="End"
+                        FontSize="Medium"
+                        Text="{Binding MonthSummery.TotalOpeningBalance, StringFormat='৳ {0:F2}'}" />
+
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        FontSize="Medium"
+                        Text="Income" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="End"
+                        FontSize="Medium"
+                        Text="{Binding MonthSummery.TotalIncome, StringFormat='৳ {0:F2}'}" />
+
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        FontSize="Medium"
+                        Text="Total fund" />
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="End"
+                        FontSize="Medium"
+                        Text="{Binding MonthSummery.TotalSourceOfFund, StringFormat='৳ {0:F2}'}" />
+
+
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        FontSize="Medium"
+                        Text="Total outflow" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="End"
+                        FontSize="Medium"
+                        Text="{Binding MonthSummery.TotalExpense, StringFormat='৳ {0:F2}'}" />
+
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        FontSize="Medium"
+                        Text="Remaining balance" />
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="End"
+                        FontSize="Medium"
+                        Text="{Binding MonthSummery.RemainingBalance, StringFormat='৳ {0:F2}'}" />
+
+                    <Label
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        FontSize="Medium"
+                        Text="Closing balance" />
+                    <Label
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="End"
+                        FontSize="Medium"
+                        Text="{Binding MonthSummery.TotalClosingBalance, StringFormat='৳ {0:F2}'}" />
+
+                    <Label
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        FontSize="Medium"
+                        Text="Difference" />
+                    <Label
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="End"
+                        FontSize="Medium"
+                        Text="{Binding MonthSummery.Difference, StringFormat='৳ {0:F2}'}" />
+                </Grid> 
+            </ContentView>
+        </RefreshView>
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="8"
+            Command="{Binding GetAllCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Text="Get All" />
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8"
+            Text="Create new" />
+
+
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource Primary}"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

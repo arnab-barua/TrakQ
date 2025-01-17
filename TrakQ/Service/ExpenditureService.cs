@@ -125,10 +125,11 @@ public sealed class ExpenditureService
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
-        return await _context.Expenditures
+        return (await _context.Expenditures
                             .Where(a => a.ExpenditureDate >= start
                                     && a.ExpenditureDate < end
                                     && !a.IsDeleted)
-                            .SumAsync(a => a.Amount);
+                            .ToListAsync())
+                            .Sum(a => a.Amount);
     }
 }

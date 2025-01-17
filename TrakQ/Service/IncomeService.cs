@@ -43,11 +43,12 @@ public sealed class IncomeService
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
-        return await _dbContext.Incomes
+        return (await _dbContext.Incomes
                             .Where(a => a.IncomeDate >= start
                                     && a.IncomeDate < end
                                     && !a.IsDeleted)
-                            .SumAsync(a => a.Amount);
+                            .ToListAsync())
+                            .Sum(a => a.Amount);
     }
 
     public async Task<int> AddAsync(IncomeViewDto formDto)

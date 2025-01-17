@@ -5,7 +5,9 @@ public static class InjectViewModels
     public static IServiceCollection AddViewModels(this IServiceCollection services)
     {
         services.AddSingleton<MainPageViewModel>();
-        
+
+        services.AddSingleton<AccountSheetPageViewModel>();
+
         services.AddSingleton<ExpenseHeadViewModel>();
         
         services.AddSingleton<ExpenseViewModel>();
@@ -16,6 +18,8 @@ public static class InjectViewModels
         
         services.AddSingleton<IncomeViewModel>();
         services.AddSingleton<IncomeFormViewModel>();
+
+        services.AddSingleton<MonthSummeryPageViewModel>();
 
         return services;
     }

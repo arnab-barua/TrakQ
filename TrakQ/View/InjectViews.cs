@@ -5,6 +5,8 @@ public static class InjectViews
     {
         services.AddSingleton<MainPage>();
 
+        services.AddSingleton<AccountSheetPage>();
+
         services.AddSingleton<ExpenseHeadPage>();
 
         services.AddSingleton<ExpensePage>();
@@ -16,6 +18,8 @@ public static class InjectViews
 
         services.AddSingleton<IncomePage>();
         services.AddSingleton<IncomeFormPage>();
+
+        services.AddSingleton<MonthSummeryPage>();
 
         return services;
     }

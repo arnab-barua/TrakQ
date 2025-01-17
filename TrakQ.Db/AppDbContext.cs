@@ -7,6 +7,9 @@ public class AppDbContext : DbContext
 
     public DbSet<ExpenditureHead> ExpenditureHeads { get; set; }
     public DbSet<Expenditure> Expenditures { get; set; }
+    public DbSet<FiscalMonth> FiscalMonths { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public DbSet<AccountSheet> AccountSheets { get; set; }
     public DbSet<IncomeHead> IncomeHeads { get; set; }
     public DbSet<Income> Incomes { get; set; }
 

@@ -74,7 +74,7 @@ public partial class MainPageViewModel : BaseViewModel
         }
         finally
         {
-
+            await Shell.Current.DisplayAlert("Done!", "File imported successfully", "OK");
         }     
 
     }
@@ -126,6 +126,7 @@ public partial class MainPageViewModel : BaseViewModel
         finally
         {
             IsBusy = false;
+            await Shell.Current.DisplayAlert("Done!", "File imported successfully", "OK");
         }
     }
 }
