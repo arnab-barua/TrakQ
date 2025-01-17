@@ -44,4 +44,14 @@
         Title="Expenses"
         ContentTemplate="{DataTemplate views:ExpensePage}"
         Route="ExpensePage" />
+
+    <ShellContent
+        Title="Account sheet"
+        ContentTemplate="{DataTemplate views:AccountSheetPage}"
+        Route="AccountSheetPage" />
+
+    <ShellContent
+        Title="Month summery"
+        ContentTemplate="{DataTemplate views:MonthSummeryPage}"
+        Route="MonthSummeryPage" />
 </Shell>

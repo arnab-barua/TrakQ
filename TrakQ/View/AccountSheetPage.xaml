@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TrakQ.View.AccountSheetPage"
+    xmlns:model="clr-namespace:TrakQ.Dto"
+    xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    x:DataType="viewmodel:AccountSheetPageViewModel"
+    Title="{Binding Title}">
+
+    <Grid
+        ColumnDefinitions="*,*"
+        ColumnSpacing="5"
+        RowDefinitions="*,Auto"
+        RowSpacing="0">
+        <RefreshView
+            Grid.ColumnSpan="2"
+            Command="{Binding GetAllCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <ContentView>
+                <CollectionView
+                    ItemsSource="{Binding AccountSheets}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:AccountSheetDto">
+                            <Border>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccountSheetPageViewModel}}, x:DataType=viewmodel:AccountSheetFormPageViewModel, Path=GoToDetailsCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <Grid Padding="10" ColumnDefinitions="Auto, *, *">
+                                    <Label
+                                        Grid.Column="0"
+                                        Text="{Binding AccountName}" />
+                                    <Label
+                                        Grid.Column="1"
+                                        HorizontalTextAlignment="End"
+                                        Text="{Binding OpeningBalance, StringFormat='৳ {0:F2}'}" />
+                                    <Label
+                                        Grid.Column="2"
+                                        HorizontalTextAlignment="End"
+                                        Text="{Binding ClosingBalance, StringFormat='৳ {0:F2}'}" />                                    
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ContentView>
+        </RefreshView>
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="8"
+            Command="{Binding GetAllCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Text="Get All" />
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8"
+            Command="{Binding CreateNewCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Text="Create new" />
+
+
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="Fill"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="{StaticResource Primary}"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

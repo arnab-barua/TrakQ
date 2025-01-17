@@ -8,6 +8,8 @@ namespace TrakQ
         {
             InitializeComponent();
 
+            Routing.RegisterRoute(nameof(AccountSheetPage), typeof(AccountSheetPage));
+            
             Routing.RegisterRoute(nameof(ExpenseHeadPage), typeof(ExpenseHeadPage));
 
             Routing.RegisterRoute(nameof(ExpensePage), typeof(ExpensePage));
@@ -18,6 +20,8 @@ namespace TrakQ
             
             Routing.RegisterRoute(nameof(IncomePage), typeof(IncomePage));
             Routing.RegisterRoute(nameof(IncomeFormPage), typeof(IncomeFormPage));
+        
+            Routing.RegisterRoute(nameof(MonthSummeryPage), typeof(MonthSummeryPage));
         }
     }
 }
