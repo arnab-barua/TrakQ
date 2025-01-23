@@ -22,7 +22,7 @@ public partial class ExpenseHeadViewModel : BaseViewModel
 
 
     [RelayCommand]
-    async Task GetAllAsync()
+    public async Task GetAllAsync()
     {
         if (IsBusy)
             return;

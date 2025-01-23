@@ -20,6 +20,9 @@ public partial class ExpenseViewModel : BaseViewModel
     [ObservableProperty]
     bool isRefreshing;
 
+    [ObservableProperty]
+    decimal total;
+
 
     int Year = DateTime.Now.Year;
 
@@ -27,7 +30,7 @@ public partial class ExpenseViewModel : BaseViewModel
 
 
     [RelayCommand]
-    async Task GetAllAsync()
+    public async Task GetAllAsync()
     {
         if (IsBusy)
             return;
@@ -54,7 +57,7 @@ public partial class ExpenseViewModel : BaseViewModel
             {
                 Expenses.Add(item);
             }
-
+            Total = newItems.Sum(a => a.TotalAmount); 
         }
         catch (Exception ex)
         {

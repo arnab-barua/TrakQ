@@ -9,8 +9,8 @@ public partial class ExpenseHeadPage : ContentPage
         Appearing += OnAppearing;
     }
 
-    private void OnAppearing(object? sender, EventArgs e)
+    private async void OnAppearing(object? sender, EventArgs e)
     {
-        (BindingContext as ExpenseHeadViewModel)?.GetAllCommand.Execute(sender);
+        await (BindingContext as ExpenseHeadViewModel)?.GetAllAsync();
     }
 }

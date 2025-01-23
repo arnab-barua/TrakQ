@@ -9,8 +9,9 @@ public partial class IncomeHeadPage : ContentPage
         Appearing += OnAppearing;
     }
 
-    private void OnAppearing(object? sender, EventArgs e)
+    private async void OnAppearing(object? sender, EventArgs e)
     {
-        (BindingContext as IncomeHeadViewModel)?.GetAllCommand.Execute(sender);
+        //(BindingContext as IncomeHeadViewModel)?.GetAllCommand.Execute(sender);
+        await (BindingContext as IncomeHeadViewModel)?.GetAllAsync();
     }
 }

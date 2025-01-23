@@ -5,19 +5,25 @@
     x:Class="TrakQ.View.IncomeHeadFormPage"
     xmlns:model="clr-namespace:TrakQ.Db.Data.Entities;assembly=TrakQ.Db"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     x:DataType="viewmodel:IncomeHeadFormViewModel"
     Title="{Binding Title}">
 
     <VerticalStackLayout Padding="20" Spacing="15">
-        <Entry
-            Placeholder="Head Name"
+        <material:TextField
+            Title="Head Name"
             Text="{Binding IncomeHead.IncomeHeadName}" />
-        
-        <Editor
-            Placeholder="Note"
-            HeightRequest="100"
+
+        <material:EditorField
+            Title="Note"
+            
             Text="{Binding IncomeHead.Note}" />
 
-        <Button Text="Save" Command="{Binding SaveCommand}" />
+        <!--<Editor
+            Placeholder="Note"
+            HeightRequest="100"
+             />-->
+        <Button StyleClass="FilledButton" Text="Save" Command="{Binding SaveCommand}" />
+        <!--<Button Text="Save" Command="{Binding SaveCommand}" />-->
     </VerticalStackLayout>
 </ContentPage>

@@ -27,41 +27,41 @@ public sealed class ExpenseHeadService
             .Select(L1 => new ExpenseHeadDto
             {
                 Id = L1.ExpenditureHeadId,
-                HeadName = L1.HeadName,
+                Name = L1.HeadName,
                 ParentHeadId = L1.ParentHeadId,
                 Note = L1.Note,
                 Budget = L1.Budget,
                 FixedAmount = L1.FixedAmount,
 
-                ChildHeads = allRows
+                Children = allRows
                             .Where(b => b.ParentHeadId == L1.ExpenditureHeadId)
                             .Select(L2 => new ExpenseHeadDto
                             {
                                 Id = L2.ExpenditureHeadId,
-                                HeadName = L2.HeadName,
+                                Name = L2.HeadName,
                                 ParentHeadId = L2.ParentHeadId,
                                 ParentName = L1.HeadName,
                                 Note = L2.Note,
                                 Budget = L2.Budget,
                                 FixedAmount = L2.FixedAmount,
 
-                                ChildHeads = allRows
+                                Children = allRows
                                             .Where(L3 => L3.ParentHeadId == L2.ExpenditureHeadId)
                                             .Select(L3 => new ExpenseHeadDto
                                             {
                                                 Id = L3.ExpenditureHeadId,
-                                                HeadName = L3.HeadName,
+                                                Name = L3.HeadName,
                                                 ParentHeadId = L3.ParentHeadId,
                                                 ParentName = L2.HeadName,
                                                 Note = L3.Note,
                                                 Budget = L3.Budget,
                                                 FixedAmount = L3.FixedAmount,
-                                                ChildHeads = allRows
+                                                Children = allRows
                                                         .Where(L4 => L4.ParentHeadId == L3.ExpenditureHeadId)
                                                         .Select(L4 => new ExpenseHeadDto
                                                         {
                                                             Id = L4.ExpenditureHeadId,
-                                                            HeadName = L4.HeadName,
+                                                            Name = L4.HeadName,
                                                             ParentHeadId = L4.ParentHeadId,
                                                             ParentName = L3.HeadName,
                                                             Note = L4.Note,
@@ -125,7 +125,7 @@ public sealed class ExpenseHeadService
     {
         var entity = new ExpenditureHead
         {
-            HeadName = expenseHeadForm.HeadName,
+            HeadName = expenseHeadForm.Name,
             ParentHeadId = expenseHeadForm.ParentHeadId,
             Note = expenseHeadForm.Note,
             FixedAmount = expenseHeadForm.FixedAmount,
@@ -148,7 +148,7 @@ public sealed class ExpenseHeadService
             throw new Exception("Invalid expense head");
         }
 
-        expenseHead.HeadName = expenseHeadForm.HeadName;
+        expenseHead.HeadName = expenseHeadForm.Name;
         expenseHead.ParentHeadId = expenseHeadForm.ParentHeadId;
         expenseHead.Note = expenseHeadForm.Note;
         expenseHead.FixedAmount = expenseHeadForm.FixedAmount;

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using TrakQ.Db;
 using TrakQ.Service;
 using TrakQ.View;
+using UraniumUI;
 
 namespace TrakQ;
 
@@ -13,6 +14,8 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseUraniumUI()
+            .UseUraniumUIMaterial()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -6,105 +6,118 @@
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:MonthSummeryPageViewModel"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    Padding="20">
 
     <Grid
         ColumnDefinitions="*,*"
-        ColumnSpacing="5"
+        ColumnSpacing="0"
         RowDefinitions="*,Auto"
         RowSpacing="0">
         <RefreshView
             Grid.ColumnSpan="2"
+            Grid.Row="0"
             Command="{Binding GetAllCommand}"
             IsRefreshing="{Binding IsRefreshing}">
-            <ContentView>
-                <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, *, *, *, *, *, *">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        FontSize="Medium"
-                        Text="Opening balance" />
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        HorizontalTextAlignment="End"
-                        FontSize="Medium"
-                        Text="{Binding MonthSummery.TotalOpeningBalance, StringFormat='৳ {0:F2}'}" />
 
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        FontSize="Medium"
-                        Text="Income" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        HorizontalTextAlignment="End"
-                        FontSize="Medium"
-                        Text="{Binding MonthSummery.TotalIncome, StringFormat='৳ {0:F2}'}" />
+            <Grid 
+                ColumnDefinitions="*, Auto" 
+                RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, *"
+                RowSpacing="15">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    FontSize="18"
+                    Text="Opening balance" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalTextAlignment="End"
+                    FontSize="18"
+                    Text="{Binding MonthSummery.TotalOpeningBalance, StringFormat='{0:N0}'}" />
 
-                    <Label
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        FontSize="Medium"
-                        Text="Total fund" />
-                    <Label
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        HorizontalTextAlignment="End"
-                        FontSize="Medium"
-                        Text="{Binding MonthSummery.TotalSourceOfFund, StringFormat='৳ {0:F2}'}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    FontSize="18"
+                    Text="Income" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalTextAlignment="End"
+                    FontSize="18"
+                    Text="{Binding MonthSummery.TotalIncome, StringFormat='{0:N0}'}" />
+
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    Text="Total fund" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    HorizontalTextAlignment="End"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    Text="{Binding MonthSummery.TotalSourceOfFund, StringFormat='{0:N0}'}" />
 
 
-                    <Label
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        FontSize="Medium"
-                        Text="Total outflow" />
-                    <Label
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        HorizontalTextAlignment="End"
-                        FontSize="Medium"
-                        Text="{Binding MonthSummery.TotalExpense, StringFormat='৳ {0:F2}'}" />
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    FontSize="18"
+                    Text="Total outflow" />
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    HorizontalTextAlignment="End"
+                    FontSize="18"
+                    Text="{Binding MonthSummery.TotalExpense, StringFormat='{0:N0}'}" />
 
-                    <Label
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        FontSize="Medium"
-                        Text="Remaining balance" />
-                    <Label
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        HorizontalTextAlignment="End"
-                        FontSize="Medium"
-                        Text="{Binding MonthSummery.RemainingBalance, StringFormat='৳ {0:F2}'}" />
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    Text="Remaining balance" />
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    HorizontalTextAlignment="End"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    Text="{Binding MonthSummery.RemainingBalance, StringFormat='{0:N0}'}" />
 
-                    <Label
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        FontSize="Medium"
-                        Text="Closing balance" />
-                    <Label
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        HorizontalTextAlignment="End"
-                        FontSize="Medium"
-                        Text="{Binding MonthSummery.TotalClosingBalance, StringFormat='৳ {0:F2}'}" />
+                <Label
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    FontSize="18"
+                    Text="Closing balance" />
+                <Label
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    HorizontalTextAlignment="End"
+                    FontSize="18"
+                    Text="{Binding MonthSummery.TotalClosingBalance, StringFormat='{0:N0}'}" />
 
-                    <Label
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        FontSize="Medium"
-                        Text="Difference" />
-                    <Label
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        HorizontalTextAlignment="End"
-                        FontSize="Medium"
-                        Text="{Binding MonthSummery.Difference, StringFormat='৳ {0:F2}'}" />
-                </Grid> 
-            </ContentView>
+                <Label
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    FontSize="20"
+                    Text="Difference" />
+                <Label
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    HorizontalTextAlignment="End"
+                    FontSize="20"
+                    Text="{Binding MonthSummery.Difference, StringFormat='{0:N0}'}" />
+
+                <Label
+                    Grid.Row="7"
+                    Grid.ColumnSpan="2" />
+            </Grid>
+
         </RefreshView>
 
         <Button

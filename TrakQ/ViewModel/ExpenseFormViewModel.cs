@@ -43,7 +43,7 @@ public partial class ExpenseFormViewModel : BaseViewModel
             }
 
             Expenditure.ExpenditureHeadId = SelectedExpenseHead.Id;
-            Expenditure.ExpenditureDate = Expenditure.ExpenditureDate.AddHours(12);
+            Expenditure.ExpenditureDate = Expenditure.ExpenditureDate.Date;
 
             int changedId = 0;
             if (Expenditure.ExpenditureId == 0)

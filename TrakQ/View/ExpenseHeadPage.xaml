@@ -2,11 +2,13 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     x:Class="TrakQ.View.ExpenseHeadPage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:ExpenseHeadViewModel"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    Padding="20">
 
     <Grid
         ColumnDefinitions="*,*"
@@ -17,27 +19,11 @@
             Grid.ColumnSpan="2"
             Command="{Binding GetAllCommand}"
             IsRefreshing="{Binding IsRefreshing}">
-            <ContentView>
-                <CollectionView
-                    ItemsSource="{Binding ExpenseHeads}"
-                    SelectionMode="None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:ExpenseHeadDto">
-                            <Grid Padding="10">
-                                <Border>                                    
-                                    <VerticalStackLayout
-                                        Grid.Column="1"
-                                        VerticalOptions="Center"
-                                        Padding="10">
-                                        <Label  Text="{Binding HeadName}" />
-                                        <Label  Text="{Binding Note}" />
-                                    </VerticalStackLayout>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </ContentView>
+
+            <ScrollView>
+                <material:TreeView ItemsSource="{Binding ExpenseHeads}" />
+            </ScrollView> 
+            
         </RefreshView>
 
         <Button

@@ -44,7 +44,7 @@ public partial class IncomeFormViewModel : BaseViewModel
             }
 
             income.IncomeHeadId = SelectedIncomeHead.IncomeHeadId;
-            income.IncomeDate = Income.IncomeDate.AddHours(12);
+            income.IncomeDate = Income.IncomeDate.Date;
 
             int changedId = 0;
             if (income.IncomeId == 0)
