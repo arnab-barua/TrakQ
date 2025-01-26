@@ -20,38 +20,49 @@
         </ResourceDictionary>
     </Shell.Resources>
 
+    <Shell.FlyoutHeader>
+        <Grid HeightRequest="100" BackgroundColor="DarkSlateBlue">
+            <Image Source="dotnet_bot.png" />
+        </Grid>
+    </Shell.FlyoutHeader>
+
     <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate views:MainPage}"
         Route="MainPage" />
 
-    <ShellContent
-        Title="Income heads"
-        ContentTemplate="{DataTemplate views:IncomeHeadPage}"
-        Route="IncomeHeadPage" />
 
-    <ShellContent
-        Title="Incomes"
-        ContentTemplate="{DataTemplate views:IncomePage}"
-        Route="IncomePage" />
+    <FlyoutItem Title="Month board" Icon="question.png">
+        <ShellContent
+            Title="Expenses"
+            ContentTemplate="{DataTemplate views:ExpensePage}"
+            Route="ExpensePage" />
 
-    <ShellContent
-        Title="Expense heads"
-        ContentTemplate="{DataTemplate views:ExpenseHeadPage}"
-        Route="ExpenseHeadPage" />
+        <ShellContent
+            Title="Incomes"
+            ContentTemplate="{DataTemplate views:IncomePage}"
+            Route="IncomePage" />
 
-    <ShellContent
-        Title="Expenses"
-        ContentTemplate="{DataTemplate views:ExpensePage}"
-        Route="ExpensePage" />
+        <ShellContent
+            Title="Account sheet"
+            ContentTemplate="{DataTemplate views:AccountSheetPage}"
+            Route="AccountSheetPage" />
 
-    <ShellContent
-        Title="Account sheet"
-        ContentTemplate="{DataTemplate views:AccountSheetPage}"
-        Route="AccountSheetPage" />
+        <ShellContent
+            Title="Month summery"
+            ContentTemplate="{DataTemplate views:MonthSummeryPage}"
+            Route="MonthSummeryPage" />
+    </FlyoutItem>
 
-    <ShellContent
-        Title="Month summery"
-        ContentTemplate="{DataTemplate views:MonthSummeryPage}"
-        Route="MonthSummeryPage" />
+    <FlyoutItem Title="Heads" Icon="moon.png">
+        <ShellContent
+            Title="Income heads"
+            ContentTemplate="{DataTemplate views:IncomeHeadPage}"
+            Route="IncomeHeadPage" />
+
+        <ShellContent
+            Title="Expense heads"
+            ContentTemplate="{DataTemplate views:ExpenseHeadPage}"
+            Route="ExpenseHeadPage" />
+    </FlyoutItem>
 </Shell>
