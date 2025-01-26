@@ -7,7 +7,7 @@
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:ExpenseFormViewModel"
     Title="{Binding Title}">
-    
+
     <Grid
         ColumnDefinitions="*"
         RowDefinitions="Auto,*"
@@ -46,7 +46,4 @@
             Padding="20"
             Command="{Binding SaveCommand}" />
     </Grid>
-    <!--<VerticalStackLayout>
-        <Label Text="Some text" />
-    </VerticalStackLayout>-->
 </ContentPage>

@@ -39,8 +39,7 @@
                             <!--Daywise expense section begin-->
                             <Border Padding="10">
                                 <CollectionView ItemsSource="{Binding Expenses}"
-                                    Header="{Binding .}"
-                                    Footer="{Binding .}">
+                                    Header="{Binding .}">
                                     <CollectionView.HeaderTemplate>
                                         <DataTemplate>
                                             <Grid ColumnDefinitions="Auto, Auto, *">
@@ -64,11 +63,11 @@
                                             </Grid>
                                         </DataTemplate>
                                     </CollectionView.HeaderTemplate>
-                                    
+
                                     <CollectionView.ItemsLayout>
                                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
                                     </CollectionView.ItemsLayout>
-                                    
+
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="model:ExpenditureDto">
                                             <Grid  ColumnDefinitions="*, Auto">
@@ -85,8 +84,7 @@
                                                         Text="{Binding ExpenditureHeadText}" />
                                                     <Label
                                                         FontSize="Caption"
-                                                        TextColor="Aqua"
-                                                        IsVisible="{Binding Remark, Converter={StaticResource StringNullOrEmptyBoolConverter}}"
+                                                        TextColor="Aqua"                                                        
                                                         Text="{Binding Remark}" />
                                                 </VerticalStackLayout>
 
@@ -101,101 +99,6 @@
 
 
                                 </CollectionView>
-
-
-
-
-                                <!--<VerticalStackLayout>
-
-                                    <Grid ColumnDefinitions="Auto, Auto, *">
-                                        <Label
-                                            Grid.Column="0"
-                                            FontSize="Medium"
-                                            Text="{Binding ExpenditureDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
-                                        <Label
-                                            Grid.Column="1"
-                                            FontSize="Default"
-                                            VerticalTextAlignment="Center"
-                                            Padding="5"
-                                            TextColor="Coral"
-                                            Text="{Binding ExpenditureDate, StringFormat='{}{0:dddd}'}" />
-
-                                        <Label
-                                            Grid.Column="2"
-                                            HorizontalTextAlignment="End"
-                                            FontSize="Medium"
-                                            Text="{Binding TotalAmount, StringFormat='{0:N0}'}" />
-                                    </Grid>
-
-
-                                    <ListView 
-                                        ItemsSource="{Binding Expenses}"
-                                        Margin="10"                                        
-                                        SelectionMode="None">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="model:ExpenditureDto">
-                                                <ViewCell>
-                                                    <Grid  ColumnDefinitions="*, Auto">
-                                                        <Grid.GestureRecognizers>
-                                                            <TapGestureRecognizer 
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:ExpenseFormViewModel, Path=GoToDetailsCommand}"
-                                                                CommandParameter="{Binding .}"/>
-                                                        </Grid.GestureRecognizers>
-                                                        <VerticalStackLayout
-                                                            Grid.Column="0"
-                                                            VerticalOptions="Start">
-                                                            <Label
-                                                                FontSize="Default"
-                                                                Text="{Binding ExpenditureHeadText}" />
-                                                            <Label
-                                                                FontSize="Caption"
-                                                                IsVisible="{Binding Remark, Converter={StaticResource StringNullOrEmptyBoolConverter}}"
-                                                                Text="{Binding Remark}" />
-                                                        </VerticalStackLayout>
-
-                                                        <Label
-                                                            Grid.Column="1"
-                                                            HorizontalTextAlignment="End"
-                                                            FontSize="Body"
-                                                            Text="{Binding Amount, StringFormat='{0:N0}'}" />
-                                                    </Grid>
-                                                </ViewCell>
-                                                
-                                                --><!--<Border Margin="5" Padding="10">
-                                                    <Border.GestureRecognizers>
-                                                        <TapGestureRecognizer 
-                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:ExpenseFormViewModel, Path=GoToDetailsCommand}"
-                                                            CommandParameter="{Binding .}"/>
-                                                    </Border.GestureRecognizers>
-
-                                                    <Grid  ColumnDefinitions="*, Auto">
-                                                        <VerticalStackLayout
-                                                            Grid.Column="0"
-                                                            VerticalOptions="Start">
-                                                            <Label
-                                                                FontSize="Default"
-                                                                Text="{Binding ExpenditureHeadText}" />
-                                                            <Label
-                                                                FontSize="Caption"
-                                                                Text="{Binding Remark}" />
-                                                        </VerticalStackLayout>
-
-                                                        <Label
-                                                            Grid.Column="1"
-                                                            HorizontalTextAlignment="End"
-                                                            FontSize="Body"
-                                                            Text="{Binding Amount, StringFormat='৳ {0:F2}'}" />
-                                                    </Grid>
-
-                                                </Border>--><!--
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>                                 
-
-                                </VerticalStackLayout>-->
-                                
-                                
-                                
                             </Border>
                             <!--Daywise expense section end-->
                         </DataTemplate>

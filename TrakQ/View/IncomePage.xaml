@@ -52,7 +52,7 @@
                                         <Label
                                             HorizontalTextAlignment="End"
                                             FontSize="Medium"
-                                            Text="{Binding Amount, StringFormat='৳ {0:F2}'}" />
+                                            Text="{Binding Amount, StringFormat='{0:N0}'}" />
                                     </VerticalStackLayout>
                                 </Grid>
                             </Border>                         

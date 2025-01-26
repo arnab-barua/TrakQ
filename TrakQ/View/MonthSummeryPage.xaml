@@ -12,11 +12,49 @@
     <Grid
         ColumnDefinitions="*,*"
         ColumnSpacing="0"
-        RowDefinitions="*,Auto"
+        RowDefinitions="Auto,*,Auto"
         RowSpacing="0">
+        <Border Grid.Row="0" 
+                Grid.ColumnSpan="2"
+                Padding="5"
+                HorizontalOptions="Center">
+            <HorizontalStackLayout>
+
+                <Button Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="8"
+                        Clicked="OnPreviousMonthMOveClicked"
+                        Command="{Binding GetAllCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        Text="P" />
+
+                <!-- Month Picker -->
+                <Picker x:Name="MonthPicker"
+                        Margin="5"
+                        ItemsSource="{Binding Months}"
+                        SelectedItem="{Binding Month}"
+                        ItemDisplayBinding="{Binding Value}"
+                        SelectedIndexChanged="OnPickerValueChanged" />
+
+                <!-- Year Picker -->
+                <Picker x:Name="YearPicker"
+                        Margin="5"
+                        ItemsSource="{Binding Years}"                        
+                        SelectedItem="{Binding Year}"
+                        SelectedIndexChanged="OnPickerValueChanged" />
+
+                <Button Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="8"
+                        Clicked="OnNextMonthMOveClicked"
+                        Command="{Binding GetAllCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        Text="N>" />
+            </HorizontalStackLayout>
+        </Border>
         <RefreshView
             Grid.ColumnSpan="2"
-            Grid.Row="0"
+            Grid.Row="1"
             Command="{Binding GetAllCommand}"
             IsRefreshing="{Binding IsRefreshing}">
 
@@ -121,7 +159,7 @@
         </RefreshView>
 
         <Button
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="0"
             Margin="8"
             Command="{Binding GetAllCommand}"
@@ -129,7 +167,7 @@
             Text="Get All" />
 
         <Button
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="1"
             Margin="8"
             Text="Create new" />

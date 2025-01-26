@@ -15,15 +15,9 @@
             Text="{Binding IncomeHead.IncomeHeadName}" />
 
         <material:EditorField
-            Title="Note"
-            
+            Title="Note"            
             Text="{Binding IncomeHead.Note}" />
 
-        <!--<Editor
-            Placeholder="Note"
-            HeightRequest="100"
-             />-->
         <Button StyleClass="FilledButton" Text="Save" Command="{Binding SaveCommand}" />
-        <!--<Button Text="Save" Command="{Binding SaveCommand}" />-->
     </VerticalStackLayout>
 </ContentPage>
