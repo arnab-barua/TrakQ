@@ -13,12 +13,14 @@ public partial class MonthSummeryPage : ContentPage
 
     private void OnAppearing(object? sender, EventArgs e)
     {
+        _viewModel.SetSelectedMonthAndYear();
         _viewModel.GetAllCommand.Execute(sender);
     }
 
     private void OnPickerValueChanged(object sender, EventArgs e)
     {
-        _viewModel.GetAllCommand.Execute(sender);
+        _viewModel.OnMonthOrYearChanged();
+        //_viewModel.GetAllCommand.Execute(sender);
     }
 
     private void OnPreviousMonthMOveClicked(object sender, EventArgs e)

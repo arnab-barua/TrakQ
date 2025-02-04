@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     x:Class="TrakQ.View.AccountSheetPage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
@@ -13,39 +14,75 @@
     <Grid
         ColumnDefinitions="*,*"
         ColumnSpacing="5"
-        RowDefinitions="*,Auto"
+        RowDefinitions="Auto,Auto,*,Auto"
         RowSpacing="0">
+        <Border Grid.Row="0" 
+                Grid.ColumnSpan="2"
+                Padding="5"
+                HorizontalOptions="Center">
+            <HorizontalStackLayout>
+
+                <Button Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="8"
+                        Clicked="OnPreviousMonthMOveClicked"
+                        IsEnabled="{Binding IsNotBusy}">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Size="15"/>
+                    </Button.ImageSource>
+                </Button>
+
+                <!-- Month Picker -->
+                <Picker x:Name="MonthPicker"
+                        Margin="5"
+                        ItemsSource="{Binding Months}"
+                        SelectedItem="{Binding Month}"
+                        ItemDisplayBinding="{Binding Value}"
+                        SelectedIndexChanged="OnPickerValueChanged" />
+
+                <!-- Year Picker -->
+                <Picker x:Name="YearPicker"
+                        Margin="5"
+                        ItemsSource="{Binding Years}"                        
+                        SelectedItem="{Binding Year}"
+                        ItemDisplayBinding="{Binding Value}"
+                        SelectedIndexChanged="OnPickerValueChanged" />
+
+                <Button Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="8"
+                        Clicked="OnNextMonthMOveClicked"
+                        IsEnabled="{Binding IsNotBusy}">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronRight}" Size="15"/>
+                    </Button.ImageSource>
+                </Button>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Label
+           Grid.Row="1"
+           Grid.Column="0"
+           HorizontalTextAlignment="Start"
+           FontSize="Medium"
+           Margin="5"
+           TextColor="Red"
+           Text="{Binding TotalOpening, StringFormat='{0:N2}'}" />
+
+        <Label
+           Grid.Row="1"
+           Grid.Column="2"
+           HorizontalTextAlignment="End"
+           FontSize="Medium"
+           Margin="5"
+           TextColor="Green"
+           Text="{Binding TotalClosing, StringFormat='{0:N2}'}" />
+
         <RefreshView
             Grid.ColumnSpan="2"
+            Grid.Row="2"
             Command="{Binding GetAllCommand}"
             IsRefreshing="{Binding IsRefreshing}">
-
-            <!--<ScrollView>
-                <material:DataGrid ItemsSource="{Binding AccountSheets}" HorizontalOptions="Center" Padding="0" Margin="0">
-                    <material:DataGrid.Columns>
-
-                        <material:DataGridColumn
-                            ValueBinding="{Binding AccountName}"
-                            Title="A/C"
-                            Width="*"
-                            />
-
-                        <material:DataGridColumn Title="Opening">
-                            <material:DataGridColumn.CellItemTemplate>
-                                <DataTemplate>
-                                    <Label Text="{Binding OpeningBalance}" />
-                                </DataTemplate>
-                            </material:DataGridColumn.CellItemTemplate>
-                        </material:DataGridColumn>                       
-
-                        <material:DataGridColumn 
-                            ValueBinding="{Binding ClosingBalance}" 
-                            Title="Closing" 
-                            Width="Auto"/>
-
-                    </material:DataGrid.Columns>
-                </material:DataGrid>
-            </ScrollView>-->
 
             <CollectionView
                 ItemsSource="{Binding AccountSheets}"
@@ -78,13 +115,13 @@
                                     Grid.Column="1"
                                     HorizontalTextAlignment="End"
                                     TextColor="Red"
-                                    Text="{Binding OpeningBalance, StringFormat='{0:N0}'}" />
+                                    Text="{Binding OpeningBalance, StringFormat='{0:N2}'}" />
                                 <Label
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     HorizontalTextAlignment="End"
                                     TextColor="Green"
-                                    Text="{Binding ClosingBalance, StringFormat='{0:N0}'}" />
+                                    Text="{Binding ClosingBalance, StringFormat='{0:N2}'}" />
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -94,7 +131,7 @@
         </RefreshView>
 
         <Button
-            Grid.Row="1"
+            Grid.Row="3"
             Grid.Column="0"
             Margin="8"
             Command="{Binding GetAllCommand}"
@@ -102,7 +139,7 @@
             Text="Get All" />
 
         <Button
-            Grid.Row="1"
+            Grid.Row="3"
             Grid.Column="1"
             Margin="8"
             Command="{Binding CreateNewCommand}"
@@ -111,7 +148,7 @@
 
 
         <ActivityIndicator
-            Grid.RowSpan="2"
+            Grid.RowSpan="4"
             Grid.ColumnSpan="2"
             HorizontalOptions="Fill"
             IsRunning="{Binding IsBusy}"

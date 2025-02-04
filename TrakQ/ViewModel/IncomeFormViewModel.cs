@@ -106,6 +106,10 @@ public partial class IncomeFormViewModel : BaseViewModel
         {
             SelectedIncomeHead = IncomeHeads.FirstOrDefault(h => h.IncomeHeadId == income.IncomeHeadId);
         }
+        else
+        {
+            SelectedIncomeHead = new();
+        }
     }
 
 }

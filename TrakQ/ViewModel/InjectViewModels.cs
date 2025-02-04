@@ -6,6 +6,7 @@ public static class InjectViewModels
     {
         services.AddSingleton<MainPageViewModel>();
 
+        services.AddSingleton<AccountSheetFormPageViewModel>();
         services.AddSingleton<AccountSheetPageViewModel>();
 
         services.AddSingleton<ExpenseHeadViewModel>();

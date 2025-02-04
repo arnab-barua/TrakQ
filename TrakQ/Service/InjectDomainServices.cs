@@ -18,6 +18,8 @@ public static class DependencyInjection
         services.AddSingleton<ImportExportService>();
 
         services.AddSingleton<ReportService>();
+        
+        services.AddSingleton<MonthBoardService>();
 
         return services;
     }

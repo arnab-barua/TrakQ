@@ -3,6 +3,7 @@
     x:Class="TrakQ.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     xmlns:local="clr-namespace:TrakQ"
     xmlns:views="clr-namespace:TrakQ.View"
     Shell.FlyoutBehavior="Flyout"
@@ -29,29 +30,49 @@
     <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate views:MainPage}"
-        Route="MainPage" />
+        Route="MainPage">
+        <ShellContent.Icon>
+            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Size="15"/>
+        </ShellContent.Icon>
+    </ShellContent>
 
 
-    <FlyoutItem Title="Month board" Icon="question.png">
+    <FlyoutItem Title="Month board">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Newspaper}" Size="15"/>
+        </FlyoutItem.Icon>
+        
         <ShellContent
-            Title="Expenses"
             ContentTemplate="{DataTemplate views:ExpensePage}"
-            Route="ExpensePage" />
+            Route="ExpensePage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Minus}" Size="20"/>               
+            </ShellContent.Icon>
+        </ShellContent>
 
         <ShellContent
-            Title="Incomes"
             ContentTemplate="{DataTemplate views:IncomePage}"
-            Route="IncomePage" />
+            Route="IncomePage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Plus}" Size="20"/>
+            </ShellContent.Icon>
+        </ShellContent>
 
         <ShellContent
-            Title="Account sheet"
             ContentTemplate="{DataTemplate views:AccountSheetPage}"
-            Route="AccountSheetPage" />
+            Route="AccountSheetPage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChartBar}" Size="20"/>
+            </ShellContent.Icon>
+        </ShellContent>
 
         <ShellContent
-            Title="Month summery"
             ContentTemplate="{DataTemplate views:MonthSummeryPage}"
-            Route="MonthSummeryPage" />
+            Route="MonthSummeryPage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Newspaper}" Size="20"/>
+            </ShellContent.Icon>
+        </ShellContent>
     </FlyoutItem>
 
     <FlyoutItem Title="Heads" Icon="moon.png">

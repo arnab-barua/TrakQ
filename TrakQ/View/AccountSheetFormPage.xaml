@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TrakQ.View.AccountSheetFormPage"
+    xmlns:model="clr-namespace:TrakQ.Dto"
+    xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+    x:DataType="viewmodel:AccountSheetFormPageViewModel"
+    Title="{Binding Title}">
+
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto,*"
+        RowSpacing="5"
+        Padding="10">
+        <VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
+            <Picker
+                x:Name="AccountId"
+                SelectedItem="{Binding SelectedAccount}"
+                ItemsSource="{Binding Accounts}"
+                ItemDisplayBinding="{Binding Value}"
+                Title="Account"/>            
+
+            <Entry
+                Placeholder="Opening"
+                Keyboard="Numeric"
+                Text="{Binding AccountSheet.OpeningBalance}" />
+
+            <Entry
+                Placeholder="Closing"
+                Keyboard="Numeric"
+                Text="{Binding AccountSheet.ClosingBalance}" />
+
+
+            <HorizontalStackLayout>
+                <!-- Month Picker -->
+                <Picker x:Name="MonthPicker"
+                        Margin="5"
+                        ItemsSource="{Binding Months}"
+                        SelectedItem="{Binding Month}"
+                        ItemDisplayBinding="{Binding Value}" />
+
+                <!-- Year Picker -->
+                <Picker x:Name="YearPicker"
+                        Margin="5"
+                        ItemsSource="{Binding Years}"                        
+                        SelectedItem="{Binding Year}"
+                        ItemDisplayBinding="{Binding Value}" />
+            </HorizontalStackLayout>
+
+
+        </VerticalStackLayout>
+
+        <Button
+            Grid.Row="1"
+            Text="Save"
+            HorizontalOptions="Center"
+            VerticalOptions="End"  
+            Command="{Binding SaveCommand}" />
+    </Grid>
+</ContentPage>

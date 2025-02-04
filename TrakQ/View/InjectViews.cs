@@ -6,6 +6,7 @@ public static class InjectViews
         services.AddSingleton<MainPage>();
 
         services.AddSingleton<AccountSheetPage>();
+        services.AddSingleton<AccountSheetFormPage>();
 
         services.AddSingleton<ExpenseHeadPage>();
 

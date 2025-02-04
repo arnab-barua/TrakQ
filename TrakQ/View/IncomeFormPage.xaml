@@ -40,8 +40,7 @@
             Grid.Row="1"
             Text="Save"
             HorizontalOptions="Center"
-            VerticalOptions="End"            
-            Padding="20"
+            VerticalOptions="End"
             Command="{Binding SaveCommand}" />
     </Grid>    
 </ContentPage>

@@ -9,6 +9,7 @@ namespace TrakQ
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(AccountSheetPage), typeof(AccountSheetPage));
+            Routing.RegisterRoute(nameof(AccountSheetFormPage), typeof(AccountSheetFormPage));
             
             Routing.RegisterRoute(nameof(ExpenseHeadPage), typeof(ExpenseHeadPage));
 

@@ -108,6 +108,10 @@ public partial class ExpenseFormViewModel : BaseViewModel
         {
             SelectedExpenseHead = ExpenseHeads.FirstOrDefault(h => h.Id == Expenditure.ExpenditureHeadId) ?? new();
         }
+        else
+        {
+            SelectedExpenseHead = new();
+        }
     }
 
 }
