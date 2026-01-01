@@ -1,4 +1,5 @@
-﻿using TrakQ.Db.Data.Entities;
+﻿using TrakQ.Db;
+using TrakQ.Db.Data.Entities;
 using TrakQ.Service;
 
 namespace TrakQ.ViewModel;
@@ -75,7 +76,7 @@ public partial class MainPageViewModel : BaseViewModel
         finally
         {
             await Shell.Current.DisplayAlert("Done!", "File imported successfully", "OK");
-        }     
+        }
 
     }
 
@@ -127,6 +128,47 @@ public partial class MainPageViewModel : BaseViewModel
         {
             IsBusy = false;
             await Shell.Current.DisplayAlert("Done!", "File imported successfully", "OK");
+        }
+    }
+
+
+    [RelayCommand]
+    async Task ExportData()
+    {
+        try
+        {
+            await RequestPermissionAsync();
+
+            var dbPath = Path.Combine(Constants.DatabasePath);
+
+            string downloadPath = string.Empty;
+
+            #if ANDROID
+            downloadPath = "/storage/emulated/0/Download/";
+            #elif WINDOWS
+            downloadPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads\";
+            #endif
+
+
+            if (!Directory.Exists(downloadPath))
+            {
+                await Shell.Current.DisplayAlert("Error", "Downloads folder not found!", "OK");
+                return;
+            }
+
+            string destinationPath = Path.Combine(downloadPath, "TrakQ.db3");
+
+            File.Copy(dbPath, destinationPath, true);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Unable to export db: {ex.StackTrace}");
+            await Shell.Current.DisplayAlert("Error!", ex.Message + ex.StackTrace, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+            await Shell.Current.DisplayAlert("Done!", "File exported successfully", "OK");
         }
     }
 }

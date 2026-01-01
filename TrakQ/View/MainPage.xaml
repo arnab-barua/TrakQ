@@ -41,6 +41,12 @@
                 HorizontalOptions="Fill"
                 Command="{Binding RequestPermissionCommand}" />
 
+            <Button
+                x:Name="ExportBtn"
+                Text="Export data" 
+                HorizontalOptions="Fill"
+                Command="{Binding ExportDataCommand}" />
+
             <Button                
                 HorizontalOptions="Fill"
                 Command="{Binding PickFileCommand}"
