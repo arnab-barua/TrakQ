@@ -30,7 +30,7 @@ public partial class ExpenseHeadViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            var items = await _expenseHeadService.GetAllAsync();
+            var items = await _expenseHeadService.GetAllOptimizedAsync();
 
             if (ExpenseHeads.Count != 0)
                 ExpenseHeads.Clear();     
@@ -51,5 +51,57 @@ public partial class ExpenseHeadViewModel : BaseViewModel
             IsBusy = false;
             IsRefreshing = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task CreateAtRootAsync()
+    {
+        var item = new ExpenseHeadDto()
+        {
+            ParentHeadId = 0,
+            ParentName = "Root",
+        };
+
+        await GoToDetails(item);
+    }
+
+    [RelayCommand]
+    private async Task AddChildAsync(ExpenseHeadDto? parent)
+    {
+        var parentId = parent?.Id ?? 0;
+        var parentName = parent?.Name ?? "Root";
+
+        var item = new ExpenseHeadDto()
+        {
+            ParentHeadId = parentId,
+            ParentName = parentName,
+        };
+
+        await GoToDetails(item);
+    }
+
+
+
+    [RelayCommand]
+    private async Task EditAsync(ExpenseHeadDto head)
+    {
+        if (head == null)
+            return;
+
+        await GoToDetails(head);
+    }
+
+
+
+    [RelayCommand]
+    async Task GoToDetails(ExpenseHeadDto item)
+    {
+        if (item == null)
+            item = new ExpenseHeadDto();
+
+        await Shell.Current.GoToAsync(nameof(ExpenseHeadFormPage), true, new Dictionary<string, object>
+        {
+            {"ExpenseHead", item }
+        });
     }
 }

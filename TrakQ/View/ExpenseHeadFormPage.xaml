@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="TrakQ.View.IncomeHeadFormPage"
+    x:Class="TrakQ.View.ExpenseHeadFormPage"
+    xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
-    x:DataType="viewmodel:IncomeHeadFormViewModel"
+    x:DataType="viewmodel:ExpenseHeadFormViewModel"
     Title="{Binding Title}">
 
     <Grid
@@ -13,15 +14,27 @@
         RowSpacing="5"
         Padding="10">
         <VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
+            <Label Text="{Binding ExpenseHead.ParentName}" />
 
             <Entry
                 Placeholder="Name"
-                Text="{Binding IncomeHead.IncomeHeadName}" />
+                Text="{Binding ExpenseHead.Name}" />
 
             <Editor
                 Placeholder="Note"
                 HeightRequest="100"
-                Text="{Binding IncomeHead.Note}" />
+                Text="{Binding ExpenseHead.Note}" />
+            
+            <Entry
+                Placeholder="FixedAmount"
+                Keyboard="Numeric"
+                Text="{Binding ExpenseHead.FixedAmount}" />
+
+            <Entry
+                Placeholder="Budget"
+                Keyboard="Numeric"
+                Text="{Binding ExpenseHead.Budget}" />
+
 
         </VerticalStackLayout>
 

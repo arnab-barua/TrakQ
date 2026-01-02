@@ -21,8 +21,43 @@
             IsRefreshing="{Binding IsRefreshing}">
 
             <ScrollView>
-                <material:TreeView ItemsSource="{Binding ExpenseHeads}" />
-            </ScrollView> 
+                <material:TreeView ItemsSource="{Binding ExpenseHeads}">
+                    <material:TreeView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ExpenseHeadDto">
+
+                            <Grid ColumnDefinitions="*,Auto,Auto"
+                  Padding="6"
+                  ColumnSpacing="6">
+
+                                <VerticalStackLayout>
+                                    <Label
+                                        Text="{Binding Name}"
+                                        FontAttributes="Bold" />
+                                </VerticalStackLayout>
+
+                                <Button
+                                    Grid.Column="1"
+                                    Text="+"
+                                    FontAttributes="Bold"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}}, 
+                                                        Path=AddChildCommand}"
+                                    CommandParameter="{Binding .}"
+                                    />
+                                <!-- Edit -->
+                                <Button
+                                    Grid.Column="2"
+                                    Text="✎"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}},
+                                                      Path=EditCommand}"
+                                    CommandParameter="{Binding .}" />
+
+                            </Grid>
+
+                        </DataTemplate>
+                    </material:TreeView.ItemTemplate>
+                </material:TreeView>
+
+            </ScrollView>
             
         </RefreshView>
 
@@ -38,7 +73,9 @@
             Grid.Row="1"
             Grid.Column="1"
             Margin="8"
-            Text="Empty button" />
+            Command="{Binding CreateAtRootCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Text="Add at root" />
 
 
         <ActivityIndicator

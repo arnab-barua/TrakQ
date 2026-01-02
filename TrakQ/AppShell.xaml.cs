@@ -12,6 +12,7 @@ namespace TrakQ
             Routing.RegisterRoute(nameof(AccountSheetFormPage), typeof(AccountSheetFormPage));
             
             Routing.RegisterRoute(nameof(ExpenseHeadPage), typeof(ExpenseHeadPage));
+            Routing.RegisterRoute(nameof(ExpenseHeadFormPage), typeof(ExpenseHeadFormPage));
 
             Routing.RegisterRoute(nameof(ExpensePage), typeof(ExpensePage));
             Routing.RegisterRoute(nameof(ExpenseFormPage), typeof(ExpenseFormPage));

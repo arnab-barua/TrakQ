@@ -6,6 +6,7 @@ public class MonthBoardService
         new (2023, "2023"),
         new (2024, "2024"),
         new (2025, "2025"),
+        new (2026, "2026"),
     ];
     public ObservableCollection<KeyValuePair<int, string>> Months { get; init; } = [
         new (1, "January"),

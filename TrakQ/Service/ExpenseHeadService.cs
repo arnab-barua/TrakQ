@@ -78,6 +78,41 @@ public sealed class ExpenseHeadService
     }
 
 
+    public async Task<List<ExpenseHeadDto>> GetAllOptimizedAsync()
+    {
+        var rows = await _context.ExpenditureHeads
+            .AsNoTracking()
+            .OrderBy(x => x.ExpenditureHeadId)
+            .ToListAsync();
+
+        // Convert to DTOs first
+        var dtoList = rows.Select(r => new ExpenseHeadDto
+        {
+            Id = r.ExpenditureHeadId,
+            Name = r.HeadName,
+            ParentHeadId = r.ParentHeadId,
+            Note = r.Note,
+            Budget = r.Budget,
+            FixedAmount = r.FixedAmount
+        }).ToList();
+
+        // Lookup by parent id
+        var lookup = dtoList.ToLookup(x => x.ParentHeadId);
+
+        // Assign children
+        foreach (var item in dtoList)
+        {
+            var parent = dtoList.FirstOrDefault(p => p.Id == item.ParentHeadId);
+            item.ParentName = parent?.Name;
+            item.Children.AddRange(lookup[item.Id]);
+        }
+
+        // Return roots (ParentHeadId == 0)
+        return lookup[0].ToList();
+    }
+
+
+
     public async Task<List<ExpenseHeadShortDto>> FilteredHeaders(string? term)
     {
         if (string.IsNullOrEmpty(term))

@@ -101,6 +101,9 @@
 	  <MauiXaml Update="View\ExpenseFormPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\ExpenseHeadFormPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\ExpenseHeadPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
