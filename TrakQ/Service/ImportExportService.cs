@@ -20,4 +20,15 @@ public sealed class ImportExportService
 
         return true;
     }
+
+
+    public async Task<bool> ForceCheckpointForDbSync()
+    {
+        var formattedQuery = FormattableStringFactory.Create("PRAGMA wal_checkpoint(FULL);");
+
+        // Execute batch query to insert data.
+        int insertedRows = await _context.Database.ExecuteSqlAsync(formattedQuery);
+
+        return true;
+    }
 }

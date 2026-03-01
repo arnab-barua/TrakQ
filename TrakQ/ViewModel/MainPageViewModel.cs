@@ -75,7 +75,7 @@ public partial class MainPageViewModel : BaseViewModel
         }
         finally
         {
-            await Shell.Current.DisplayAlert("Done!", "File imported successfully", "OK");
+            await Shell.Current.DisplayAlert("Done!", "Permission set successfully", "OK");
         }
 
     }
@@ -138,6 +138,9 @@ public partial class MainPageViewModel : BaseViewModel
         try
         {
             await RequestPermissionAsync();
+
+            // Force WAL synchronization
+            await _importExportService.ForceCheckpointForDbSync();
 
             var dbPath = Path.Combine(Constants.DatabasePath);
 
