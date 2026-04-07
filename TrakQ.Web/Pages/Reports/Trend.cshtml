@@ -1,0 +1,84 @@
+@page
+@model TrakQ.Web.Pages.Reports.TrendModel
+@{
+    ViewData["Title"] = "Trend Analysis";
+}
+
+<h2 class="mb-1">Trend Analysis</h2>
+<p class="text-muted mb-3">Income vs Expense over time</p>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-auto">
+        <label class="form-label fw-semibold mb-1">Show last</label>
+        <select name="months" class="form-select form-select-sm">
+            @foreach (var n in new[] { 6, 12, 18, 24 })
+            {
+                <option value="@n" selected="@(n == Model.MonthsBack)">@n months</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+    </div>
+</form>
+
+@if (Model.Trend.Any())
+{
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-transparent fw-semibold">Income vs Expense</div>
+        <div class="card-body">
+            <canvas id="trendChart" style="max-height:360px"></canvas>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent fw-semibold">Monthly Breakdown</div>
+        <div class="card-body p-0">
+            <table class="table table-sm table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Month</th>
+                        <th class="text-end text-success">Income</th>
+                        <th class="text-end text-danger">Expense</th>
+                        <th class="text-end">Net</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Trend)
+                    {
+                        var net = row.Income - row.Expense;
+                        <tr>
+                            <td>@row.Label</td>
+                            <td class="text-end text-success">@row.Income.ToString("N2")</td>
+                            <td class="text-end text-danger">@row.Expense.ToString("N2")</td>
+                            <td class="text-end @(net >= 0 ? "text-success" : "text-danger") fw-semibold">
+                                @net.ToString("N2")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot class="table-light fw-bold">
+                    <tr>
+                        <td>Total</td>
+                        <td class="text-end text-success">@Model.Trend.Sum(t => t.Income).ToString("N2")</td>
+                        <td class="text-end text-danger">@Model.Trend.Sum(t => t.Expense).ToString("N2")</td>
+                        <td class="text-end @(Model.Trend.Sum(t => t.Income - t.Expense) >= 0 ? "text-success" : "text-danger")">
+                            @Model.Trend.Sum(t => t.Income - t.Expense).ToString("N2")
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-secondary">No data available for the selected period.</div>
+}
+
+@section Scripts {
+    <script>
+        window.__chartData = window.__chartData || {};
+        window.__chartData.trend = @Html.Raw(Model.TrendChartJson);
+    </script>
+}

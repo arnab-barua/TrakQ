@@ -1,0 +1,74 @@
+@page
+@model TrakQ.Web.Pages.Reports.IncomeModel
+@{
+    ViewData["Title"] = "Income Report";
+}
+
+<h2 class="mb-1">Income Report</h2>
+<p class="text-muted mb-3">@Model.Selector.MonthName @Model.Selector.Year</p>
+
+<partial name="_MonthSelector" model="Model.Selector" />
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <div class="text-muted small mb-1">Total Income</div>
+                <div class="fs-3 fw-bold text-success">@Model.Total.ToString("N2")</div>
+                <div class="text-muted small">@Model.Groups.Sum(g => g.Rows.Count) transaction(s)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Groups.Any())
+{
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-transparent fw-semibold">Income by Category</div>
+        <div class="card-body">
+            <canvas id="incomeChart" style="max-height:280px"></canvas>
+        </div>
+    </div>
+
+    @foreach (var group in Model.Groups)
+    {
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">@group.HeadName</span>
+                <span class="badge bg-success fs-6">@group.SubTotal.ToString("N2")</span>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-sm table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Remark</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in group.Rows)
+                        {
+                            <tr>
+                                <td>@row.Date.ToString("dd MMM")</td>
+                                <td class="text-muted small">@row.Remark</td>
+                                <td class="text-end text-success">@row.Amount.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-secondary">No income records found for this period.</div>
+}
+
+@section Scripts {
+    <script>
+        window.__chartData = window.__chartData || {};
+        window.__chartData.income = @Html.Raw(Model.IncomeChartJson);
+    </script>
+}
