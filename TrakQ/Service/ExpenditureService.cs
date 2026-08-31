@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 using TrakQ.Dto;
@@ -7,17 +7,18 @@ namespace TrakQ.Service;
 
 public sealed class ExpenditureService
 {
-    private readonly AppDbContext _context;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public ExpenditureService(AppDbContext context)
+    public ExpenditureService(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
 
 
     public async Task<List<ExpenditureDto>> GetMonthDataAsync(int year, int month)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
@@ -42,6 +43,7 @@ public sealed class ExpenditureService
 
     public async Task<int> AddAsync(ExpenditureDto expenseDto)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var expenseHead = await _context.ExpenditureHeads
                             .Where(a => a.ExpenditureHeadId == expenseDto.ExpenditureHeadId)
                             .AsNoTracking()
@@ -70,6 +72,7 @@ public sealed class ExpenditureService
 
     public async Task<bool> RemoveAsync(int expenditureId)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var expenditure = await _context.Expenditures
                             .FirstOrDefaultAsync(a => a.ExpenditureId == expenditureId);
 
@@ -86,6 +89,7 @@ public sealed class ExpenditureService
 
     public async Task<int> UpdateAsync(ExpenditureDto expenseDto)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var expenditure = await _context.Expenditures
                             .FirstOrDefaultAsync(a => a.ExpenditureId == expenseDto.ExpenditureId);
 
@@ -122,6 +126,7 @@ public sealed class ExpenditureService
 
     public async Task<decimal> GetTotalMonthExpenditureAsync(int year, int month)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
@@ -133,3 +138,4 @@ public sealed class ExpenditureService
                             .Sum(a => a.Amount);
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using TrakQ.Db;
+using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 using TrakQ.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -6,15 +6,16 @@ using Microsoft.EntityFrameworkCore;
 namespace TrakQ.Service;
 public sealed class ExpenseHeadService
 {
-    private readonly AppDbContext _context;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public ExpenseHeadService(AppDbContext context)
+    public ExpenseHeadService(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<List<ExpenseHeadDto>> GetAllAsync()
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var allRows = await _context.ExpenditureHeads
             .OrderBy(a => a.ExpenditureHeadId)
             .AsNoTracking()
@@ -80,6 +81,7 @@ public sealed class ExpenseHeadService
 
     public async Task<List<ExpenseHeadDto>> GetAllOptimizedAsync()
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var rows = await _context.ExpenditureHeads
             .AsNoTracking()
             .OrderBy(x => x.ExpenditureHeadId)
@@ -115,6 +117,7 @@ public sealed class ExpenseHeadService
 
     public async Task<List<ExpenseHeadShortDto>> FilteredHeaders(string? term)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         if (string.IsNullOrEmpty(term))
         {
             term = string.Empty;
@@ -138,6 +141,7 @@ public sealed class ExpenseHeadService
 
     public async Task<List<ParentTypeExpenseHeadDto>> GetParentTypeHeadsAsync()
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var data = await _context.ExpenditureHeads
                     .Where(a => a.ParentHeadId == 0)
                     .Select(a => new ParentTypeExpenseHeadDto
@@ -158,6 +162,7 @@ public sealed class ExpenseHeadService
 
     public async Task<int> AddExpenseHeadAsync(ExpenseHeadDto expenseHeadForm)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var entity = new ExpenditureHead
         {
             HeadName = expenseHeadForm.Name,
@@ -175,6 +180,7 @@ public sealed class ExpenseHeadService
 
     public async Task<int> UpdateExpenseHeadAsync(ExpenseHeadDto expenseHeadForm)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var expenseHead = await _context.ExpenditureHeads
                             .FirstOrDefaultAsync(a => a.ExpenditureHeadId == expenseHeadForm.Id);
 

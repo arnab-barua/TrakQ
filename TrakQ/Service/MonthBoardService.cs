@@ -1,4 +1,4 @@
-﻿namespace TrakQ.Service;
+namespace TrakQ.Service;
 public class MonthBoardService
 {
     public ObservableCollection<KeyValuePair<int, string>> Years { get; init; } = [
@@ -55,3 +55,4 @@ public class MonthBoardService
         _selectedYear = year.Key >= 2022 ? year.Key : DateTime.Now.Year;
     }
 }
+

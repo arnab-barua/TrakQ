@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 using TrakQ.Dto;
@@ -6,15 +6,16 @@ using TrakQ.Dto;
 namespace TrakQ.Service;
 public sealed class IncomeService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public IncomeService(AppDbContext dbContext)
+    public IncomeService(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _dbContext = dbContext;
+        _contextFactory = contextFactory;
     }
 
     public async Task<List<IncomeViewDto>> GetMonthDataAsync(int year, int month)
     {
+        using var _dbContext = await _contextFactory.CreateDbContextAsync();
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
@@ -40,6 +41,7 @@ public sealed class IncomeService
 
     public async Task<decimal> GetTotalMonthIncomeAsync(int year, int month)
     {
+        using var _dbContext = await _contextFactory.CreateDbContextAsync();
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
@@ -53,6 +55,7 @@ public sealed class IncomeService
 
     public async Task<int> AddAsync(IncomeViewDto formDto)
     {
+        using var _dbContext = await _contextFactory.CreateDbContextAsync();
         var incomeHead = await _dbContext.IncomeHeads
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.IncomeHeadId == formDto.IncomeHeadId);
@@ -80,6 +83,7 @@ public sealed class IncomeService
 
     public async Task<int> UpdateAsync(int id, IncomeViewDto formDto)
     {
+        using var _dbContext = await _contextFactory.CreateDbContextAsync();
         var income = await _dbContext.Incomes
                             .FirstOrDefaultAsync(a => a.IncomeId == id);
 

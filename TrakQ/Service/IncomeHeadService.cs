@@ -1,19 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 
 namespace TrakQ.Service;
 public sealed class IncomeHeadService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public IncomeHeadService(AppDbContext dbContext)
+    public IncomeHeadService(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _dbContext = dbContext;
+        _contextFactory = contextFactory;
     }
 
     public async Task<List<IncomeHead>> GetIncomeHeadsAsync()
     {
+        using var _dbContext = await _contextFactory.CreateDbContextAsync();
         return await _dbContext.IncomeHeads
             .OrderBy(a => a.IncomeHeadName)
             .ToListAsync();
@@ -21,6 +22,7 @@ public sealed class IncomeHeadService
 
     public async Task<bool> CreateIncomeHeadAsync(IncomeHead data)
     {
+        using var _dbContext = await _contextFactory.CreateDbContextAsync();
         var entity = new IncomeHead
         {
             IncomeHeadName = data.IncomeHeadName,
@@ -34,6 +36,7 @@ public sealed class IncomeHeadService
 
     public async Task<bool> UpdateIncomeHeadAsync(IncomeHead data)
     {
+        using var _dbContext = await _contextFactory.CreateDbContextAsync();
         var incomeHead = await _dbContext.IncomeHeads
                             .FirstOrDefaultAsync(a => a.IncomeHeadId == data.IncomeHeadId);
 

@@ -1,4 +1,4 @@
-﻿namespace TrakQ.ViewModel;
+namespace TrakQ.ViewModel;
 
 public static class InjectViewModels
 {
@@ -6,22 +6,22 @@ public static class InjectViewModels
     {
         services.AddSingleton<MainPageViewModel>();
 
-        services.AddSingleton<AccountSheetFormPageViewModel>();
-        services.AddSingleton<AccountSheetPageViewModel>();
+        services.AddTransient<AccountSheetFormPageViewModel>();
+        services.AddTransient<AccountSheetPageViewModel>();
 
-        services.AddSingleton<ExpenseHeadViewModel>();
-        services.AddSingleton<ExpenseHeadFormViewModel>();
+        services.AddTransient<ExpenseHeadViewModel>();
+        services.AddTransient<ExpenseHeadFormViewModel>();
         
-        services.AddSingleton<ExpenseViewModel>();
-        services.AddSingleton<ExpenseFormViewModel>();
+        services.AddTransient<ExpenseViewModel>();
+        services.AddTransient<ExpenseFormViewModel>();
         
-        services.AddSingleton<IncomeHeadViewModel>();
-        services.AddSingleton<IncomeHeadFormViewModel>();
+        services.AddTransient<IncomeHeadViewModel>();
+        services.AddTransient<IncomeHeadFormViewModel>();
         
-        services.AddSingleton<IncomeViewModel>();
-        services.AddSingleton<IncomeFormViewModel>();
+        services.AddTransient<IncomeViewModel>();
+        services.AddTransient<IncomeFormViewModel>();
 
-        services.AddSingleton<MonthSummeryPageViewModel>();
+        services.AddTransient<MonthSummeryPageViewModel>();
 
         return services;
     }

@@ -1,18 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrakQ.Db;
 
 namespace TrakQ.Service;
 public sealed class ImportExportService
 {
-    private readonly AppDbContext _context;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public ImportExportService(AppDbContext context)
+    public ImportExportService(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<bool> ImportBulkDataAsync(string rawQuery)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var formattedQuery = FormattableStringFactory.Create(rawQuery);
 
         // Execute batch query to insert data.
@@ -24,6 +25,7 @@ public sealed class ImportExportService
 
     public async Task<bool> ForceCheckpointForDbSync()
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var formattedQuery = FormattableStringFactory.Create("PRAGMA wal_checkpoint(FULL);");
 
         // Execute batch query to insert data.
@@ -32,3 +34,4 @@ public sealed class ImportExportService
         return true;
     }
 }
+

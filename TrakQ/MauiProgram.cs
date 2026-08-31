@@ -1,4 +1,4 @@
-﻿using Fonts;
+using Fonts;
 using Microsoft.Extensions.Logging;
 using TrakQ.Db;
 using TrakQ.Service;
@@ -27,8 +27,7 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddDbContext<AppDbContext>();
-
+        builder.Services.AddDbContextFactory<AppDbContext>();
         builder.Services.AddDomainServices();
         builder.Services.AddViewModels();
         builder.Services.AddViews();

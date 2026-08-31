@@ -1,19 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrakQ.Db;
 
 namespace TrakQ.Service;
 
 public class AccountService
 {
-    private readonly AppDbContext _context;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public AccountService(AppDbContext context)
+    public AccountService(IDbContextFactory<AppDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<List<KeyValuePair<int, string>>> GetAllAccountsAsync()
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         return await _context.Accounts
             .AsNoTracking()
             .Select(x => new KeyValuePair<int, string>(x.AccountId, x.AccountName))

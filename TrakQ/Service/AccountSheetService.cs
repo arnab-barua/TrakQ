@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 using TrakQ.Dto;
@@ -8,12 +8,12 @@ namespace TrakQ.Service;
 
 public class AccountSheetService
 {
-    private readonly AppDbContext _context;
+    private readonly IDbContextFactory<AppDbContext> _contextFactory;
     private readonly FiscalMonthService _fiscalMonthService;
 
-    public AccountSheetService(AppDbContext context, FiscalMonthService fiscalMonthService)
+    public AccountSheetService(IDbContextFactory<AppDbContext> contextFactory, FiscalMonthService fiscalMonthService)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _fiscalMonthService = fiscalMonthService;
     }
 
@@ -28,6 +28,7 @@ public class AccountSheetService
             return [];
         }
 
+        using var _context = await _contextFactory.CreateDbContextAsync();
         return await _context.AccountSheets
                         .Where(a => a.FiscalMonthId == fiscalMonth.Id)
                         .Include(a => a.Account)
@@ -49,6 +50,7 @@ public class AccountSheetService
 
     public async Task<int> AddAsync(AccountSheetDto formDto)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var account = await _context.Accounts
                         .Where(a => a.AccountId == formDto.AccountId)
                         .AsNoTracking()
@@ -97,6 +99,7 @@ public class AccountSheetService
 
     public async Task<int> UpdateAsync(AccountSheetDto formDto)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         AccountSheet? accountSheet = await _context.AccountSheets
                             .FirstOrDefaultAsync(a => a.Id == formDto.Id);
 
@@ -146,6 +149,7 @@ public class AccountSheetService
             return new Tuple<decimal, decimal>(0, 0);
         }
 
+        using var _context = await _contextFactory.CreateDbContextAsync();
         var data = await _context.AccountSheets
                         .Where(a => a.FiscalMonthId == fiscalMonth.Id)
                         .Select(a => new
@@ -164,9 +168,11 @@ public class AccountSheetService
 
     private async Task<bool> IsAccountSheetAlreadyAddedInThisFiscaLMonth(int year, int month, int accountId)
     {
+        using var _context = await _contextFactory.CreateDbContextAsync();
         return await _context.AccountSheets
                         .AnyAsync(a => a.AccountId == accountId
                                     && a.FiscalMonth.Year == year
                                     && a.FiscalMonth.Month == month);
     }
 }
+

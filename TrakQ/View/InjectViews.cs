@@ -1,26 +1,26 @@
-﻿namespace TrakQ.View;
+namespace TrakQ.View;
 public static class InjectViews
 {
     public static IServiceCollection AddViews(this IServiceCollection services)
     {
         services.AddSingleton<MainPage>();
 
-        services.AddSingleton<AccountSheetPage>();
-        services.AddSingleton<AccountSheetFormPage>();
+        services.AddTransient<AccountSheetPage>();
+        services.AddTransient<AccountSheetFormPage>();
 
-        services.AddSingleton<ExpenseHeadPage>();
+        services.AddTransient<ExpenseHeadPage>();
 
-        services.AddSingleton<ExpensePage>();
-        services.AddSingleton<ExpenseFormPage>();
+        services.AddTransient<ExpensePage>();
+        services.AddTransient<ExpenseFormPage>();
 
 
-        services.AddSingleton<IncomeHeadPage>();
-        services.AddSingleton<IncomeHeadFormPage>();
+        services.AddTransient<IncomeHeadPage>();
+        services.AddTransient<IncomeHeadFormPage>();
 
-        services.AddSingleton<IncomePage>();
-        services.AddSingleton<IncomeFormPage>();
+        services.AddTransient<IncomePage>();
+        services.AddTransient<IncomeFormPage>();
 
-        services.AddSingleton<MonthSummeryPage>();
+        services.AddTransient<MonthSummeryPage>();
 
         return services;
     }
