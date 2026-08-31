@@ -16,14 +16,20 @@
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.ForegroundColor" Value="{OnPlatform WinUI={StaticResource Primary}, Default=White}" />
                 <Setter Property="Shell.TitleColor" Value="White" />
-
             </Style>
         </ResourceDictionary>
     </Shell.Resources>
 
     <Shell.FlyoutHeader>
-        <Grid HeightRequest="100" BackgroundColor="DarkSlateBlue">
-            <Image Source="dotnet_bot.png" />
+        <Grid HeightRequest="160" BackgroundColor="{StaticResource Primary}" Padding="20">
+            <!-- Modern TrakQ Header -->
+            <VerticalStackLayout VerticalOptions="End" Spacing="5">
+                <Border StrokeThickness="0" BackgroundColor="White" WidthRequest="60" HeightRequest="60" CornerRadius="30" HorizontalOptions="Start">
+                    <Label Text="Q" FontSize="32" FontFamily="OpenSansSemibold" TextColor="{StaticResource Secondary}" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Border>
+                <Label Text="TrakQ" FontSize="22" FontFamily="OpenSansSemibold" TextColor="White" Margin="0,5,0,0"/>
+                <Label Text="Personal Finance" FontSize="12" TextColor="#E8F5E9" />
+            </VerticalStackLayout>
         </Grid>
     </Shell.FlyoutHeader>
 
@@ -32,66 +38,91 @@
         ContentTemplate="{DataTemplate views:MainPage}"
         Route="MainPage">
         <ShellContent.Icon>
-            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Size="15"/>
+            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.House}" Size="20"/>
         </ShellContent.Icon>
     </ShellContent>
 
-
-    <FlyoutItem Title="Month board">
+    <FlyoutItem Title="Month Board">
         <FlyoutItem.Icon>
-            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Newspaper}" Size="15"/>
+            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Calendar}" Size="20"/>
         </FlyoutItem.Icon>
         
         <ShellContent
+            Title="Expenses"
             ContentTemplate="{DataTemplate views:ExpensePage}"
             Route="ExpensePage">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Minus}" Size="20"/>               
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ArrowDown}" Size="20" Color="#E53935"/>               
             </ShellContent.Icon>
         </ShellContent>
 
         <ShellContent
+            Title="Income"
             ContentTemplate="{DataTemplate views:IncomePage}"
             Route="IncomePage">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Plus}" Size="20"/>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ArrowUp}" Size="20" Color="#43A047"/>
             </ShellContent.Icon>
         </ShellContent>
 
         <ShellContent
+            Title="Accounts"
             ContentTemplate="{DataTemplate views:AccountSheetPage}"
             Route="AccountSheetPage">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChartBar}" Size="20"/>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Wallet}" Size="20"/>
             </ShellContent.Icon>
         </ShellContent>
 
         <ShellContent
+            Title="Summary"
             ContentTemplate="{DataTemplate views:MonthSummeryPage}"
             Route="MonthSummeryPage">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Newspaper}" Size="20"/>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChartPie}" Size="20"/>
             </ShellContent.Icon>
         </ShellContent>
     </FlyoutItem>
 
-    <FlyoutItem Title="Heads" Icon="moon.png">
-        <ShellContent
-            Title="Income heads"
-            ContentTemplate="{DataTemplate views:IncomeHeadPage}"
-            Route="IncomeHeadPage" />
+    <FlyoutItem Title="Categories">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Tags}" Size="20"/>
+        </FlyoutItem.Icon>
 
         <ShellContent
-            Title="Expense heads"
+            Title="Income Heads"
+            ContentTemplate="{DataTemplate views:IncomeHeadPage}"
+            Route="IncomeHeadPage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Tag}" Size="20"/>
+            </ShellContent.Icon>
+        </ShellContent>
+
+        <ShellContent
+            Title="Expense Heads"
             ContentTemplate="{DataTemplate views:ExpenseHeadPage}"
-            Route="ExpenseHeadPage" />
+            Route="ExpenseHeadPage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Tag}" Size="20"/>
+            </ShellContent.Icon>
+        </ShellContent>
     </FlyoutItem>
 
-    <FlyoutItem Title="System Logs" Icon="moon.png">
+    <FlyoutItem Title="System Logs">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.Bug}" Size="20"/>
+        </FlyoutItem.Icon>
+
         <ShellContent
             Title="Error Logs"
             ContentTemplate="{DataTemplate views:LogsPage}"
-            Route="LogsPage" />
+            Route="LogsPage">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ClipboardList}" Size="20"/>
+            </ShellContent.Icon>
+        </ShellContent>
     </FlyoutItem>
+
 </Shell>
+
 
