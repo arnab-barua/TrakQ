@@ -1,4 +1,4 @@
-﻿using TrakQ.Dto;
+using TrakQ.Dto;
 using TrakQ.Service;
 using TrakQ.View;
 
@@ -7,7 +7,7 @@ public partial class AccountSheetPageViewModel : BaseViewModel
 {
     private readonly AccountSheetService _accountSheetService;
     private readonly MonthBoardService _monthBoardService;
-    public ObservableCollection<AccountSheetDto> AccountSheets { get; set; } = [];
+    [ObservableProperty] ObservableCollection<AccountSheetDto> accountSheets = [];
 
 
 
@@ -57,7 +57,7 @@ public partial class AccountSheetPageViewModel : BaseViewModel
     /// <summary>
     /// ViewModel => Service.
     /// </summary>
-    public async void OnMonthOrYearChanged()
+    public async Task OnMonthOrYearChanged()
     {
         if (Month.Key > 0 && Year.Key > 0)
         {
@@ -66,7 +66,7 @@ public partial class AccountSheetPageViewModel : BaseViewModel
         }
     }
 
-    public async void MoveMonth(bool toLeft)
+    public void MoveMonth(bool toLeft)
     {
         int currentMonth = Month.Key;
         int currentYear = Year.Key;
@@ -104,19 +104,13 @@ public partial class AccountSheetPageViewModel : BaseViewModel
 
             
 
-            if (AccountSheets.Count != 0)
-                AccountSheets.Clear();
-
-            foreach (var item in items)
-            {
-                AccountSheets.Add(item);
-            }
+            AccountSheets = new ObservableCollection<AccountSheetDto>(items);
             TotalOpening = items.Sum(a => a.OpeningBalance);
             TotalClosing = items.Sum(a => a.ClosingBalance) ?? 0;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Unable to get incomes: {ex.Message}");
+            Debug.WriteLine($"Unable to get account sheets: {ex.Message}");
             await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
         }
         finally
@@ -145,3 +139,5 @@ public partial class AccountSheetPageViewModel : BaseViewModel
         });
     }
 }
+
+

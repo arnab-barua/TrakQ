@@ -83,7 +83,7 @@
                             <Border>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:IncomeViewModel}}, x:DataType=viewmodel:IncomeFormViewModel, Path=GoToDetailsCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:IncomeViewModel}}, x:DataType=viewmodel:IncomeViewModel, Path=GoToDetailsCommand}"
                                     CommandParameter="{Binding .}"/>
                                 </Border.GestureRecognizers>
                                 <Grid Padding="10" ColumnDefinitions="*, Auto">

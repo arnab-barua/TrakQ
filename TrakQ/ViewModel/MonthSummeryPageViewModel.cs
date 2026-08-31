@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TrakQ.Dto;
 using TrakQ.Service;
 
@@ -52,7 +52,7 @@ public partial class MonthSummeryPageViewModel : BaseViewModel
     /// <summary>
     /// ViewModel => Service.
     /// </summary>
-    public async void OnMonthOrYearChanged()
+    public async Task OnMonthOrYearChanged()
     {
         if (Month.Key > 0 && Year.Key > 0)
         {
@@ -61,7 +61,7 @@ public partial class MonthSummeryPageViewModel : BaseViewModel
         }
     }
 
-    public async void MoveMonth(bool toLeft)
+    public void MoveMonth(bool toLeft)
     {
         int currentMonth = Month.Key;
         int currentYear = Year.Key;
@@ -111,7 +111,7 @@ public partial class MonthSummeryPageViewModel : BaseViewModel
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Unable to get monkeys: {ex.Message}");
+            Debug.WriteLine($"Unable to get month summary: {ex.Message}");
             await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
         }
         finally
@@ -124,3 +124,5 @@ public partial class MonthSummeryPageViewModel : BaseViewModel
 
     
 }
+
+

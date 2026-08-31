@@ -83,7 +83,7 @@
                                 <CollectionView ItemsSource="{Binding Expenses}"
                                     Header="{Binding .}">
                                     <CollectionView.HeaderTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="model:ExpensesByDay">
                                             <Grid ColumnDefinitions="Auto, Auto, *">
                                                 <Label
                                                     Grid.Column="0"
@@ -115,7 +115,7 @@
                                             <Grid  ColumnDefinitions="*, Auto">
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer 
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:ExpenseFormViewModel, Path=GoToDetailsCommand}"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:ExpenseViewModel, Path=GoToDetailsCommand}"
                                                         CommandParameter="{Binding .}"/>
                                                 </Grid.GestureRecognizers>
                                                 <VerticalStackLayout

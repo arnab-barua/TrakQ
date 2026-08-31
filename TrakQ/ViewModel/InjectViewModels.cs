@@ -23,6 +23,8 @@ public static class InjectViewModels
 
         services.AddTransient<MonthSummeryPageViewModel>();
 
+        services.AddTransient<LogsPageViewModel>();
         return services;
     }
 }
+

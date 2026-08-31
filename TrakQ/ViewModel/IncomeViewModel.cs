@@ -1,4 +1,4 @@
-﻿using TrakQ.Dto;
+using TrakQ.Dto;
 using TrakQ.Service;
 using TrakQ.View;
 
@@ -7,7 +7,7 @@ public partial class IncomeViewModel : BaseViewModel
 {
     private readonly IncomeService _incomeService;
     private readonly MonthBoardService _monthBoardService;
-    public ObservableCollection<IncomeViewDto> Incomes { get; set; } = [];
+    [ObservableProperty] ObservableCollection<IncomeViewDto> incomes = [];
 
 
 
@@ -54,7 +54,7 @@ public partial class IncomeViewModel : BaseViewModel
     /// <summary>
     /// ViewModel => Service.
     /// </summary>
-    public async void OnMonthOrYearChanged()
+    public async Task OnMonthOrYearChanged()
     {
         if (Month.Key > 0 && Year.Key > 0)
         {
@@ -63,7 +63,7 @@ public partial class IncomeViewModel : BaseViewModel
         }
     }
 
-    public async void MoveMonth(bool toLeft)
+    public void MoveMonth(bool toLeft)
     {
         int currentMonth = Month.Key;
         int currentYear = Year.Key;
@@ -99,18 +99,12 @@ public partial class IncomeViewModel : BaseViewModel
             IsBusy = true;
             var items = await _incomeService.GetMonthDataAsync(Year.Key, Month.Key);
 
-            if (Incomes.Count != 0)
-                Incomes.Clear();
-
-            foreach (var item in items)
-            {
-                Incomes.Add(item);
-            }
+            Incomes = new ObservableCollection<IncomeViewDto>(items);
             Total = items.Sum(a => a.Amount);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Unable to get monkeys: {ex.Message}");
+            Debug.WriteLine($"Unable to get incomes: {ex.Message}");
             await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
         }
         finally
@@ -140,3 +134,5 @@ public partial class IncomeViewModel : BaseViewModel
         });
     }
 }
+
+

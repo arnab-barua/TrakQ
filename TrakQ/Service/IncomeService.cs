@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 using TrakQ.Dto;
@@ -7,6 +11,27 @@ namespace TrakQ.Service;
 public sealed class IncomeService
 {
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
+
+    private static readonly Func<AppDbContext, DateTime, DateTime, IAsyncEnumerable<IncomeViewDto>> _getMonthDataQuery =
+        EF.CompileAsyncQuery((AppDbContext context, DateTime start, DateTime end) =>
+            context.Incomes
+                .Where(a => a.IncomeDate >= start && a.IncomeDate < end && !a.IsDeleted)
+                .OrderBy(a => a.IncomeDate.Date)
+                .Select(a => new IncomeViewDto
+                {
+                    IncomeId = a.IncomeId,
+                    IncomeHeadId = a.IncomeHeadId,
+                    IncomeHeadName = a.IncomeHead.IncomeHeadName,
+                    IncomeDate = a.IncomeDate,
+                    Amount = a.Amount,
+                    Remark = a.Remark
+                }));
+
+    private static readonly Func<AppDbContext, DateTime, DateTime, Task<decimal>> _getTotalMonthIncomeQuery =
+        EF.CompileAsyncQuery((AppDbContext context, DateTime start, DateTime end) =>
+            context.Incomes
+                .Where(a => a.IncomeDate >= start && a.IncomeDate < end && !a.IsDeleted)
+                .Sum(a => a.Amount));
 
     public IncomeService(IDbContextFactory<AppDbContext> contextFactory)
     {
@@ -19,25 +44,13 @@ public sealed class IncomeService
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
-        return await _dbContext.Incomes
-                            .Where(a => a.IncomeDate >= start
-                                    && a.IncomeDate < end
-                                    && !a.IsDeleted)
-                            .Include(a => a.IncomeHead)
-                            .OrderBy(a => a.IncomeDate.Date)
-                            .AsNoTracking()
-                            .Select(a => new IncomeViewDto
-                            {
-                                IncomeId = a.IncomeId,
-                                IncomeHeadId = a.IncomeHeadId,
-                                IncomeHeadName = a.IncomeHead.IncomeHeadName,
-                                IncomeDate = a.IncomeDate,
-                                Amount = a.Amount,
-                                Remark = a.Remark
-                            })
-                            .ToListAsync();
+        var list = new List<IncomeViewDto>();
+        await foreach (var item in _getMonthDataQuery(_dbContext, start, end))
+        {
+            list.Add(item);
+        }
+        return list;
     }
-
 
     public async Task<decimal> GetTotalMonthIncomeAsync(int year, int month)
     {
@@ -45,12 +58,7 @@ public sealed class IncomeService
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
-        return (await _dbContext.Incomes
-                            .Where(a => a.IncomeDate >= start
-                                    && a.IncomeDate < end
-                                    && !a.IsDeleted)
-                            .ToListAsync())
-                            .Sum(a => a.Amount);
+        return await _getTotalMonthIncomeQuery(_dbContext, start, end);
     }
 
     public async Task<int> AddAsync(IncomeViewDto formDto)

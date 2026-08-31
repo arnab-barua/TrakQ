@@ -1,4 +1,4 @@
-﻿namespace TrakQ.Service;
+namespace TrakQ.Service;
 
 public static class DependencyInjection
 {
@@ -21,6 +21,8 @@ public static class DependencyInjection
         
         services.AddSingleton<MonthBoardService>();
 
+        services.AddSingleton<ExceptionLoggerService>();
         return services;
     }
 }
+

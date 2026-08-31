@@ -1,4 +1,4 @@
-﻿using TrakQ.Dto;
+using TrakQ.Dto;
 using TrakQ.Service;
 using TrakQ.View;
 
@@ -7,7 +7,7 @@ public partial class ExpenseViewModel : BaseViewModel
 {
     private readonly ExpenditureService _expenditureService;
     private readonly MonthBoardService _monthBoardService;
-    public ObservableCollection<ExpensesByDay> Expenses { get; set; } = [];
+    [ObservableProperty] ObservableCollection<ExpensesByDay> expenses = [];
 
 
 
@@ -54,7 +54,7 @@ public partial class ExpenseViewModel : BaseViewModel
     /// <summary>
     /// ViewModel => Service.
     /// </summary>
-    public async void OnMonthOrYearChanged()
+    public async Task OnMonthOrYearChanged()
     {
         if(Month.Key > 0 && Year.Key > 0)
         {
@@ -63,7 +63,7 @@ public partial class ExpenseViewModel : BaseViewModel
         }        
     }
 
-    public async void MoveMonth(bool toLeft)
+    public void MoveMonth(bool toLeft)
     {
         int currentMonth = Month.Key;
         int currentYear = Year.Key;
@@ -109,13 +109,7 @@ public partial class ExpenseViewModel : BaseViewModel
                 .OrderBy(a => a.ExpenditureDate)
                 .ToList();
 
-            if (Expenses.Count != 0)
-                Expenses.Clear();
-
-            foreach (var item in newItems)
-            {
-                Expenses.Add(item);
-            }
+            Expenses = new ObservableCollection<ExpensesByDay>(newItems);
             Total = newItems.Sum(a => a.TotalAmount); 
         }
         catch (Exception ex)
@@ -149,3 +143,5 @@ public partial class ExpenseViewModel : BaseViewModel
         });
     }
 }
+
+

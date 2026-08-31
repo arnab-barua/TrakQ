@@ -97,7 +97,7 @@
                         <Border>
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccountSheetPageViewModel}}, x:DataType=viewmodel:AccountSheetFormPageViewModel, Path=GoToDetailsCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccountSheetPageViewModel}}, x:DataType=viewmodel:AccountSheetPageViewModel, Path=GoToDetailsCommand}"
                                     CommandParameter="{Binding .}"/>
                             </Border.GestureRecognizers>
                             <Grid

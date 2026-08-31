@@ -86,4 +86,12 @@
             ContentTemplate="{DataTemplate views:ExpenseHeadPage}"
             Route="ExpenseHeadPage" />
     </FlyoutItem>
+
+    <FlyoutItem Title="System Logs" Icon="moon.png">
+        <ShellContent
+            Title="Error Logs"
+            ContentTemplate="{DataTemplate views:LogsPage}"
+            Route="LogsPage" />
+    </FlyoutItem>
 </Shell>
+

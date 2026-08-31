@@ -17,10 +17,9 @@ public partial class AccountSheetPage : ContentPage
         _viewModel.GetAllCommand.Execute(sender);
     }
 
-    private void OnPickerValueChanged(object sender, EventArgs e)
+    private async void OnPickerValueChanged(object sender, EventArgs e)
     {
-        _viewModel.OnMonthOrYearChanged();
-        //_viewModel.GetAllCommand.Execute(sender);
+        await _viewModel.OnMonthOrYearChanged();
     }
 
     private void OnPreviousMonthMOveClicked(object sender, EventArgs e)

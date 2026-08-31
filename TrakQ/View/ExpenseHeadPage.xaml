@@ -40,7 +40,7 @@
                                     Text="+"
                                     FontAttributes="Bold"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}}, 
-                                                        Path=AddChildCommand}"
+                                                        x:DataType=viewmodel:ExpenseHeadViewModel, Path=AddChildCommand}"
                                     CommandParameter="{Binding .}"
                                     />
                                 <!-- Edit -->
@@ -48,7 +48,7 @@
                                     Grid.Column="2"
                                     Text="✎"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}},
-                                                      Path=EditCommand}"
+                                                      x:DataType=viewmodel:ExpenseHeadViewModel, Path=EditCommand}"
                                     CommandParameter="{Binding .}" />
 
                             </Grid>
@@ -88,3 +88,4 @@
             VerticalOptions="Center" />
     </Grid>
 </ContentPage>
+

@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TrakQ.Db;
 using TrakQ.Db.Data.Entities;
 using TrakQ.Dto;
@@ -9,12 +13,31 @@ public sealed class ExpenditureService
 {
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
+    private static readonly Func<AppDbContext, DateTime, DateTime, IAsyncEnumerable<ExpenditureDto>> _getMonthDataQuery =
+        EF.CompileAsyncQuery((AppDbContext context, DateTime start, DateTime end) =>
+            context.Expenditures
+                .Where(a => a.ExpenditureDate >= start && a.ExpenditureDate < end && !a.IsDeleted)
+                .OrderBy(a => a.ExpenditureDate.Date)
+                .Select(a => new ExpenditureDto
+                {
+                    ExpenditureId = a.ExpenditureId,
+                    ExpenditureHeadId = a.ExpenditureHeadId,
+                    ExpenditureHeadText = a.ExpenditureHead.HeadName,
+                    ExpenditureDate = a.ExpenditureDate,
+                    Amount = a.Amount,
+                    Remark = a.Remark
+                }));
+
+    private static readonly Func<AppDbContext, DateTime, DateTime, Task<decimal>> _getTotalMonthExpenditureQuery =
+        EF.CompileAsyncQuery((AppDbContext context, DateTime start, DateTime end) =>
+            context.Expenditures
+                .Where(a => a.ExpenditureDate >= start && a.ExpenditureDate < end && !a.IsDeleted)
+                .Sum(a => a.Amount));
+
     public ExpenditureService(IDbContextFactory<AppDbContext> contextFactory)
     {
         _contextFactory = contextFactory;
     }
-
-
 
     public async Task<List<ExpenditureDto>> GetMonthDataAsync(int year, int month)
     {
@@ -22,23 +45,12 @@ public sealed class ExpenditureService
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
-        return await _context.Expenditures
-                            .Where(a => a.ExpenditureDate >= start
-                                    && a.ExpenditureDate < end
-                                    && !a.IsDeleted)
-                            .Include(a => a.ExpenditureHead)
-                            .OrderBy(a => a.ExpenditureDate.Date)
-                            .AsNoTracking()
-                            .Select(a => new ExpenditureDto
-                            {
-                                ExpenditureId = a.ExpenditureId,
-                                ExpenditureHeadId = a.ExpenditureHeadId,
-                                ExpenditureHeadText = a.ExpenditureHead.HeadName,
-                                ExpenditureDate = a.ExpenditureDate,
-                                Amount = a.Amount,
-                                Remark = a.Remark
-                            })
-                            .ToListAsync();
+        var list = new List<ExpenditureDto>();
+        await foreach (var item in _getMonthDataQuery(_context, start, end))
+        {
+            list.Add(item);
+        }
+        return list;
     }
 
     public async Task<int> AddAsync(ExpenditureDto expenseDto)
@@ -130,12 +142,6 @@ public sealed class ExpenditureService
         DateTime start = new(year, month, 1, 0, 0, 0);
         DateTime end = start.AddMonths(1);
 
-        return (await _context.Expenditures
-                            .Where(a => a.ExpenditureDate >= start
-                                    && a.ExpenditureDate < end
-                                    && !a.IsDeleted)
-                            .ToListAsync())
-                            .Sum(a => a.Amount);
+        return await _getTotalMonthExpenditureQuery(_context, start, end);
     }
 }
-

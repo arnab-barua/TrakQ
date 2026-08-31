@@ -22,6 +22,8 @@ public static class InjectViews
 
         services.AddTransient<MonthSummeryPage>();
 
+        services.AddTransient<LogsPage>();
         return services;
     }
 }
+
