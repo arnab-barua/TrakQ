@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrakQ.Db.Data.Entities;
 
+[Index(nameof(AccountId), nameof(FiscalMonthId), IsUnique = true)]
 public class AccountSheet
 {
     [Key]

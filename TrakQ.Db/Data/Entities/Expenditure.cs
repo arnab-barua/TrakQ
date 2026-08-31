@@ -1,8 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrakQ.Db.Data.Entities;
+
+[Index(nameof(ExpenditureDate))]
+[Index(nameof(IsDeleted))]
+[Index(nameof(ParentHeadId))]
 public class Expenditure
 {
     [Key]

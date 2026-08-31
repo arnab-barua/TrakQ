@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace TrakQ.Db.Data.Entities;
 
+[Index(nameof(Year), nameof(Month), IsUnique = true)]
 public class FiscalMonth
 {
     [Key]
