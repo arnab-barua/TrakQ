@@ -2,45 +2,70 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     x:Class="TrakQ.View.IncomeFormPage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:IncomeFormViewModel"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    BackgroundColor="{AppThemeBinding Light=#F5F7FA, Dark=#121212}">
 
-    <Grid
-        ColumnDefinitions="*"
-        RowDefinitions="Auto,*"
-        RowSpacing="5"
-        Padding="10">
-        <VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
-            <Picker
-                x:Name="IncomeHeadId"
-                SelectedItem="{Binding SelectedIncomeHead}"
-                ItemsSource="{Binding IncomeHeads}"
-                ItemDisplayBinding="{Binding IncomeHeadName}"
-                Title="IncomeHeadId"/>
+    <ScrollView>
+        <Grid Padding="16" RowSpacing="16">
+            <Border StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="20">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,4" Radius="8" Opacity="0.08" />
+                </Border.Shadow>
+                
+                <VerticalStackLayout Spacing="20">
+                    
+                    <Label Text="Income Details" 
+                           FontSize="20" 
+                           FontFamily="OpenSansSemibold" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"
+                           Margin="0,0,0,8" />
 
-            <DatePicker HorizontalOptions="Fill" Date="{Binding Income.IncomeDate}" />
+                    <material:PickerField
+                        x:Name="IncomeHeadId"
+                        Title="Income Head"
+                        SelectedItem="{Binding SelectedIncomeHead}"
+                        ItemsSource="{Binding IncomeHeads}"
+                        ItemDisplayBinding="{Binding IncomeHeadName}" />
 
-            <Entry
-                Placeholder="Amount"
-                Keyboard="Numeric"
-                Text="{Binding Income.Amount}" />
+                    <material:DatePickerField
+                        Title="Date"
+                        Date="{Binding Income.IncomeDate}" />
 
-            <Editor
-                Placeholder="Note"
-                HeightRequest="100"
-                Text="{Binding Income.Remark}" />
+                    <material:TextField
+                        Title="Amount"
+                        Keyboard="Numeric"
+                        Text="{Binding Income.Amount}" />
 
+                    <material:EditorField
+                        Title="Note"
+                        HeightRequest="100"
+                        Text="{Binding Income.Remark}" />
 
-        </VerticalStackLayout>
+                    <Button
+                        Text="SAVE"
+                        Command="{Binding SaveCommand}"
+                        CornerRadius="24"
+                        HeightRequest="48"
+                        Margin="0, 16, 0, 0"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White">
+                        <Button.Shadow>
+                            <Shadow Brush="{StaticResource Primary}" Offset="0,4" Radius="8" Opacity="0.3" />
+                        </Button.Shadow>
+                    </Button>
 
-        <Button
-            Grid.Row="1"
-            Text="Save"
-            HorizontalOptions="Center"
-            VerticalOptions="End"
-            Command="{Binding SaveCommand}" />
-    </Grid>    
+                </VerticalStackLayout>
+            </Border>
+        </Grid>    
+    </ScrollView>
 </ContentPage>

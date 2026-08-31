@@ -3,176 +3,196 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     x:Class="TrakQ.View.ExpensePage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:ExpenseViewModel"
     Title="{Binding Title}"
-    Padding="20">
+    BackgroundColor="{AppThemeBinding Light=#F5F7FA, Dark=#121212}">
 
-    <Grid
-        ColumnDefinitions="*,*"
-        ColumnSpacing="5"
-        RowDefinitions="Auto,Auto,*,Auto"
-        RowSpacing="0">
-        <Border Grid.Row="0" 
-                Grid.ColumnSpan="2"
-                Padding="5"
-                HorizontalOptions="Center">
-            <HorizontalStackLayout>
+    <Grid>
+        <!-- Main Layout -->
+        <Grid RowDefinitions="Auto, Auto, *" Padding="16">
+            
+            <!-- Header Selectors -->
+            <Border Grid.Row="0"
+                    StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="10">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,2" Radius="6" Opacity="0.05" />
+                </Border.Shadow>
+                <Grid ColumnDefinitions="Auto, *, *, Auto" ColumnSpacing="12">
+                    <!-- Prev Button -->
+                    <Button Grid.Column="0"
+                            Clicked="OnPreviousMonthMOveClicked"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="Transparent"
+                            WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Color="{StaticResource Primary}" Size="18"/>
+                        </Button.ImageSource>
+                    </Button>
 
-                <Button Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="8"
-                        Clicked="OnPreviousMonthMOveClicked"
-                        IsEnabled="{Binding IsNotBusy}">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Size="15"/>
-                    </Button.ImageSource>
-                </Button>
+                    <material:PickerField Grid.Column="1"
+                                          x:Name="MonthPicker"
+                                          Title="Month"
+                                          ItemsSource="{Binding Months}"
+                                          SelectedItem="{Binding Month}"
+                                          ItemDisplayBinding="{Binding Value}"
+                                           />
+                                          
+                    <material:PickerField Grid.Column="2"
+                                          x:Name="YearPicker"
+                                          Title="Year"
+                                          ItemsSource="{Binding Years}"                        
+                                          SelectedItem="{Binding Year}"
+                                          ItemDisplayBinding="{Binding Value}"
+                                           />
 
-                <!-- Month Picker -->
-                <Picker x:Name="MonthPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Months}"
-                        SelectedItem="{Binding Month}"
-                        ItemDisplayBinding="{Binding Value}"
-                        SelectedIndexChanged="OnPickerValueChanged" />
-
-                <!-- Year Picker -->
-                <Picker x:Name="YearPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Years}"                        
-                        SelectedItem="{Binding Year}"
-                        ItemDisplayBinding="{Binding Value}"
-                        SelectedIndexChanged="OnPickerValueChanged" />
-
-                <Button Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="8"
-                        Clicked="OnNextMonthMOveClicked"
-                        IsEnabled="{Binding IsNotBusy}">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronRight}" Size="15"/>
-                    </Button.ImageSource>
-                </Button>
-            </HorizontalStackLayout>
-        </Border>
-        <Label
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            HorizontalTextAlignment="Center"
-            FontSize="Medium"
-            Margin="5"
-            Text="{Binding Total, StringFormat='Total   {0:N0}'}" />
-        <RefreshView
-            Grid.ColumnSpan="2"
-            Grid.Row="2"
-            Command="{Binding GetAllCommand}"
-            IsRefreshing="{Binding IsRefreshing}">
-            <ContentView>
+                    <!-- Next Button -->
+                    <Button Grid.Column="3"
+                            Clicked="OnNextMonthMOveClicked"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="Transparent"
+                            WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronRight}" Color="{StaticResource Primary}" Size="18"/>
+                        </Button.ImageSource>
+                    </Button>
+                </Grid>
+            </Border>
+            
+            <!-- Total Label -->
+            <Label Grid.Row="1"
+                   HorizontalTextAlignment="Center"
+                   FontSize="Title"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}"
+                   Margin="0, 16, 0, 8"
+                   Text="{Binding Total, StringFormat='Total   {0:N2}'}" />
+            
+            <!-- List View -->
+            <RefreshView Grid.Row="2"
+                         Command="{Binding GetAllCommand}"
+                         IsRefreshing="{Binding IsRefreshing}">
                 <CollectionView ItemsSource="{Binding Expenses}" 
                                 SelectionMode="None">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="16" />
                     </CollectionView.ItemsLayout>
+                    <CollectionView.Footer>
+                        <ContentView HeightRequest="80" />
+                    </CollectionView.Footer>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:ExpensesByDay">
-                            <!--Daywise expense section begin-->
-                            <Border Padding="10">
-                                <CollectionView ItemsSource="{Binding Expenses}"
-                                    Header="{Binding .}">
+                            <!-- Daywise expense section -->
+                            <Border StrokeThickness="0"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="16">
+                                <Border.Shadow>
+                                    <Shadow Brush="Black" Offset="0,2" Radius="4" Opacity="0.08" />
+                                </Border.Shadow>
+                                
+                                <CollectionView ItemsSource="{Binding Expenses}" Header="{Binding .}">
+                                    
                                     <CollectionView.HeaderTemplate>
                                         <DataTemplate x:DataType="model:ExpensesByDay">
-                                            <Grid ColumnDefinitions="Auto, Auto, *">
-                                                <Label
-                                                    Grid.Column="0"
-                                                    FontSize="Medium"
-                                                    Text="{Binding ExpenditureDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
-                                                <Label
-                                                    Grid.Column="1"
-                                                    FontSize="Default"
-                                                    VerticalTextAlignment="Center"
-                                                    Padding="5"
-                                                    TextColor="Coral"
-                                                    Text="{Binding ExpenditureDate, StringFormat='{}{0:dddd}'}" />
+                                            <Grid ColumnDefinitions="Auto, *, Auto" Margin="0,0,0,12">
+                                                <Label Grid.Column="0"
+                                                       FontSize="16"
+                                                       FontFamily="OpenSansSemibold"
+                                                       TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"
+                                                       Text="{Binding ExpenditureDate, StringFormat='{}{0:dd MMM yyyy}'}" />
+                                                       
+                                                <Label Grid.Column="1"
+                                                       FontSize="14"
+                                                       VerticalTextAlignment="Center"
+                                                       Margin="8,0,0,0"
+                                                       TextColor="{StaticResource Secondary}"
+                                                       Text="{Binding ExpenditureDate, StringFormat='{}{0:dddd}'}" />
 
-                                                <Label
-                                                    Grid.Column="2"
-                                                    HorizontalTextAlignment="End"
-                                                    FontSize="Medium"
-                                                    Text="{Binding TotalAmount, StringFormat='{0:N2}'}" />
+                                                <Label Grid.Column="2"
+                                                       HorizontalTextAlignment="End"
+                                                       FontSize="16"
+                                                       FontFamily="OpenSansSemibold"
+                                                       TextColor="{StaticResource Primary}"
+                                                       Text="{Binding TotalAmount, StringFormat='{0:N2}'}" />
+                                                
+                                                <BoxView Grid.ColumnSpan="3" 
+                                                         HeightRequest="1" 
+                                                         Color="{StaticResource Gray200}"
+                                                         VerticalOptions="End"
+                                                         Margin="0,8,0,-8"/>
                                             </Grid>
                                         </DataTemplate>
                                     </CollectionView.HeaderTemplate>
 
                                     <CollectionView.ItemsLayout>
-                                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
                                     </CollectionView.ItemsLayout>
 
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="model:ExpenditureDto">
-                                            <Grid  ColumnDefinitions="*, Auto">
+                                            <Grid ColumnDefinitions="*, Auto" Padding="0,4">
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer 
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseViewModel}}, x:DataType=viewmodel:ExpenseViewModel, Path=GoToDetailsCommand}"
                                                         CommandParameter="{Binding .}"/>
                                                 </Grid.GestureRecognizers>
-                                                <VerticalStackLayout
-                                                    Grid.Column="0"
-                                                    VerticalOptions="Start">
-                                                    <Label
-                                                        FontSize="Default"
-                                                        Text="{Binding ExpenditureHeadText}" />
-                                                    <Label
-                                                        FontSize="Caption"
-                                                        TextColor="Aqua"                                                        
-                                                        Text="{Binding Remark}" />
+                                                
+                                                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                                    <Label FontSize="15"
+                                                           TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"
+                                                           Text="{Binding ExpenditureHeadText}" />
+                                                    <Label FontSize="13"
+                                                           TextColor="{StaticResource Gray500}"                                                        
+                                                           Text="{Binding Remark}" 
+                                                            />
                                                 </VerticalStackLayout>
 
-                                                <Label
-                                                    Grid.Column="1"
-                                                    HorizontalTextAlignment="End"
-                                                    FontSize="Body"
-                                                    Text="{Binding Amount, StringFormat='{0:N2}'}" />
+                                                <Label Grid.Column="1"
+                                                       HorizontalTextAlignment="End"
+                                                       VerticalOptions="Center"
+                                                       FontSize="15"
+                                                       TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"
+                                                       Text="{Binding Amount, StringFormat='{0:N2}'}" />
                                             </Grid>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
 
-
                                 </CollectionView>
                             </Border>
-                            <!--Daywise expense section end-->
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </ContentView>
-        </RefreshView>
+            </RefreshView>
+        </Grid>
 
-        <Button
-            Grid.Row="3"
-            Grid.Column="0"
-            Margin="8"
-            Command="{Binding GetAllCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Get All" />
+        <!-- Floating Action Button (FAB) -->
+        <Button Text="+" 
+                Command="{Binding CreateNewCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                WidthRequest="64" HeightRequest="64" CornerRadius="32"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="24"
+                BackgroundColor="{StaticResource Secondary}"
+                TextColor="White"
+                FontSize="32"
+                Padding="0, -5, 0, 0">
+            <Button.Shadow>
+                <Shadow Brush="{StaticResource Secondary}" Offset="0,4" Radius="8" Opacity="0.4" />
+            </Button.Shadow>
+        </Button>
 
-        <Button
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="8"
-            Command="{Binding CreateNewCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Create new" />
-
-
-        <ActivityIndicator
-            Grid.RowSpan="4"
-            Grid.ColumnSpan="2"
-            HorizontalOptions="Fill"
-            IsRunning="{Binding IsBusy}"
-            IsVisible="{Binding IsBusy}"
-            Color="{StaticResource Primary}"
-            VerticalOptions="Center" />
+        <ActivityIndicator HorizontalOptions="Center"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource Primary}"
+                           VerticalOptions="Center" />
     </Grid>
 </ContentPage>
+

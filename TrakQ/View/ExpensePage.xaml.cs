@@ -17,10 +17,7 @@ public partial class ExpensePage : ContentPage
         _viewModel.GetAllCommand.Execute(sender);
     }
 
-    private async void OnPickerValueChanged(object sender, EventArgs e)
-    {
-        await _viewModel.OnMonthOrYearChanged();
-    }
+    
 
     private void OnPreviousMonthMOveClicked(object sender, EventArgs e)
     {
@@ -32,3 +29,4 @@ public partial class ExpensePage : ContentPage
         _viewModel?.MoveMonth(false);
     }
 }
+

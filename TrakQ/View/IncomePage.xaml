@@ -3,146 +3,156 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     x:Class="TrakQ.View.IncomePage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:IncomeViewModel"
     Title="{Binding Title}"
-    Padding="20">
+    BackgroundColor="{AppThemeBinding Light=#F5F7FA, Dark=#121212}">
 
-    <Grid
-        ColumnDefinitions="*,*"
-        ColumnSpacing="5"
-        RowDefinitions="Auto,Auto,*,Auto"
-        RowSpacing="0">
-        <Border Grid.Row="0" 
-                Grid.ColumnSpan="2"
-                Padding="5"
-                HorizontalOptions="Center">
-            <HorizontalStackLayout>
+    <Grid>
+        <!-- Main Layout -->
+        <Grid RowDefinitions="Auto, Auto, *" Padding="16">
+            
+            <!-- Header Selectors -->
+            <Border Grid.Row="0"
+                    StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="10">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,2" Radius="6" Opacity="0.05" />
+                </Border.Shadow>
+                <Grid ColumnDefinitions="Auto, *, *, Auto" ColumnSpacing="12">
+                    <!-- Prev Button -->
+                    <Button Grid.Column="0"
+                            Clicked="OnPreviousMonthMOveClicked"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="Transparent"
+                            WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Color="{StaticResource Primary}" Size="18"/>
+                        </Button.ImageSource>
+                    </Button>
 
-                <Button Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="8"
-                        Clicked="OnPreviousMonthMOveClicked"
-                        IsEnabled="{Binding IsNotBusy}">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Size="15"/>
-                    </Button.ImageSource>
-                </Button>
+                    <material:PickerField Grid.Column="1"
+                                          x:Name="MonthPicker"
+                                          Title="Month"
+                                          ItemsSource="{Binding Months}"
+                                          SelectedItem="{Binding Month}"
+                                          ItemDisplayBinding="{Binding Value}"
+                                           />
+                                          
+                    <material:PickerField Grid.Column="2"
+                                          x:Name="YearPicker"
+                                          Title="Year"
+                                          ItemsSource="{Binding Years}"                        
+                                          SelectedItem="{Binding Year}"
+                                          ItemDisplayBinding="{Binding Value}"
+                                           />
 
-                <!-- Month Picker -->
-                <Picker x:Name="MonthPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Months}"
-                        SelectedItem="{Binding Month}"
-                        ItemDisplayBinding="{Binding Value}"
-                        SelectedIndexChanged="OnPickerValueChanged" />
-
-                <!-- Year Picker -->
-                <Picker x:Name="YearPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Years}"                        
-                        SelectedItem="{Binding Year}"
-                        ItemDisplayBinding="{Binding Value}"
-                        SelectedIndexChanged="OnPickerValueChanged" />
-
-                <Button Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="8"
-                        Clicked="OnNextMonthMOveClicked"
-                        IsEnabled="{Binding IsNotBusy}">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronRight}" Size="15"/>
-                    </Button.ImageSource>
-                </Button>
-            </HorizontalStackLayout>
-        </Border>
-        
-        <Label
-           Grid.Row="1"
-           Grid.ColumnSpan="2"
-           HorizontalTextAlignment="Center"
-           FontSize="Medium"
-           Margin="5"
-           Text="{Binding Total, StringFormat='Total   {0:N2}'}" />
-        
-        <RefreshView
-            Grid.ColumnSpan="2"
-            Grid.Row="2"
-            Command="{Binding GetAllCommand}"
-            IsRefreshing="{Binding IsRefreshing}">
-            <ContentView>
+                    <!-- Next Button -->
+                    <Button Grid.Column="3"
+                            Clicked="OnNextMonthMOveClicked"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="Transparent"
+                            WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronRight}" Color="{StaticResource Primary}" Size="18"/>
+                        </Button.ImageSource>
+                    </Button>
+                </Grid>
+            </Border>
+            
+            <!-- Total Label -->
+            <Label Grid.Row="1"
+                   HorizontalTextAlignment="Center"
+                   FontSize="Title"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}"
+                   Margin="0, 16, 0, 8"
+                   Text="{Binding Total, StringFormat='Total   {0:N2}'}" />
+            
+            <!-- List View -->
+            <RefreshView Grid.Row="2"
+                         Command="{Binding GetAllCommand}"
+                         IsRefreshing="{Binding IsRefreshing}">
                 <CollectionView ItemsSource="{Binding Incomes}"
                                 SelectionMode="None">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
                     </CollectionView.ItemsLayout>
+                    <!-- Bottom padding so last item is not hidden by FAB -->
+                    <CollectionView.Footer>
+                        <ContentView HeightRequest="80" />
+                    </CollectionView.Footer>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:IncomeViewDto">                            
-                            <Border>
+                            <Border StrokeThickness="0"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    StrokeShape="RoundRectangle 12">
+                                <Border.Shadow>
+                                    <Shadow Brush="Black" Offset="0,2" Radius="4" Opacity="0.08" />
+                                </Border.Shadow>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer 
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:IncomeViewModel}}, x:DataType=viewmodel:IncomeViewModel, Path=GoToDetailsCommand}"
                                     CommandParameter="{Binding .}"/>
                                 </Border.GestureRecognizers>
-                                <Grid Padding="10" ColumnDefinitions="*, Auto">
-                                    <VerticalStackLayout
-                                        Grid.Column="0"
-                                        VerticalOptions="Center"
-                                        Padding="10">
-                                        <Label
-                                            FontSize="Medium"
-                                            Text="{Binding IncomeHeadName}" />
-                                        <Label
-                                            Text="{Binding Remark}" />
+                                <Grid Padding="16" ColumnDefinitions="*, Auto">
+                                    <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                        <Label FontSize="16"
+                                               FontFamily="OpenSansSemibold"
+                                               Text="{Binding IncomeHeadName}" 
+                                               TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"/>
+                                        <Label FontSize="14"
+                                               Text="{Binding Remark}"
+                                               TextColor="{StaticResource Gray500}"
+                                               Margin="0,4,0,0" />
                                     </VerticalStackLayout>
                                     
-                                    <VerticalStackLayout
-                                        Grid.Column="1"
-                                        VerticalOptions="Center"
-                                        Padding="10">
-                                        <Label
-                                            HorizontalTextAlignment="End"
-                                            FontSize="Caption"
-                                            Text="{Binding IncomeDate, StringFormat='{}{0:dd/MM/yyyy}'}" />
-                                        <Label
-                                            HorizontalTextAlignment="End"
-                                            FontSize="Medium"
-                                            Text="{Binding Amount, StringFormat='{0:N2}'}" />
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label HorizontalTextAlignment="End"
+                                               FontSize="12"
+                                               TextColor="{StaticResource Gray400}"
+                                               Text="{Binding IncomeDate, StringFormat='{}{0:dd MMM yyyy}'}" />
+                                        <Label HorizontalTextAlignment="End"
+                                               FontSize="18"
+                                               FontFamily="OpenSansSemibold"
+                                               TextColor="{StaticResource Primary}"
+                                               Text="{Binding Amount, StringFormat='{0:N2}'}"
+                                               Margin="0,4,0,0"/>
                                     </VerticalStackLayout>
                                 </Grid>
                             </Border>                         
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </ContentView>
-        </RefreshView>
+            </RefreshView>
+        </Grid>
 
-        <Button
-            Grid.Row="3"
-            Grid.Column="0"
-            Margin="8"
-            Command="{Binding GetAllCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Get All" />
+        <!-- Floating Action Button (FAB) -->
+        <Button Text="+" 
+                Command="{Binding CreateNewCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                WidthRequest="64" HeightRequest="64" CornerRadius="32"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="24"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                FontSize="32"
+                Padding="0, -5, 0, 0">
+            <Button.Shadow>
+                <Shadow Brush="{StaticResource Primary}" Offset="0,4" Radius="8" Opacity="0.4" />
+            </Button.Shadow>
+        </Button>
 
-        <Button
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="8"
-            Command="{Binding CreateNewCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Create new" />
-
-
-        <ActivityIndicator
-            Grid.RowSpan="4"
-            Grid.ColumnSpan="2"
-            HorizontalOptions="Fill"
-            IsRunning="{Binding IsBusy}"
-            IsVisible="{Binding IsBusy}"
-            Color="{StaticResource Primary}"
-            VerticalOptions="Center" />
+        <ActivityIndicator HorizontalOptions="Center"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource Primary}"
+                           VerticalOptions="Center" />
     </Grid>
 </ContentPage>
+

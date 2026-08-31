@@ -2,60 +2,84 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     x:Class="TrakQ.View.AccountSheetFormPage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:AccountSheetFormPageViewModel"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    BackgroundColor="{AppThemeBinding Light=#F5F7FA, Dark=#121212}">
 
-    <Grid
-        ColumnDefinitions="*"
-        RowDefinitions="Auto,*"
-        RowSpacing="5"
-        Padding="10">
-        <VerticalStackLayout Padding="20" Spacing="15" Grid.Row="0">
-            <Picker
-                x:Name="AccountId"
-                SelectedItem="{Binding SelectedAccount}"
-                ItemsSource="{Binding Accounts}"
-                ItemDisplayBinding="{Binding Value}"
-                Title="Account"/>            
+    <ScrollView>
+        <Grid Padding="16" RowSpacing="16">
+            <Border StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="20">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,4" Radius="8" Opacity="0.08" />
+                </Border.Shadow>
+                
+                <VerticalStackLayout Spacing="20">
+                    
+                    <Label Text="Account Balances" 
+                           FontSize="20" 
+                           FontFamily="OpenSansSemibold" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"
+                           Margin="0,0,0,8" />
 
-            <Entry
-                Placeholder="Opening"
-                Keyboard="Numeric"
-                Text="{Binding AccountSheet.OpeningBalance}" />
+                    <material:PickerField
+                        x:Name="AccountId"
+                        Title="Account"
+                        SelectedItem="{Binding SelectedAccount}"
+                        ItemsSource="{Binding Accounts}"
+                        ItemDisplayBinding="{Binding Value}" />            
 
-            <Entry
-                Placeholder="Closing"
-                Keyboard="Numeric"
-                Text="{Binding AccountSheet.ClosingBalance}" />
+                    <material:TextField
+                        Title="Opening Balance"
+                        Keyboard="Numeric"
+                        Text="{Binding AccountSheet.OpeningBalance}" />
 
+                    <material:TextField
+                        Title="Closing Balance"
+                        Keyboard="Numeric"
+                        Text="{Binding AccountSheet.ClosingBalance}" />
 
-            <HorizontalStackLayout>
-                <!-- Month Picker -->
-                <Picker x:Name="MonthPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Months}"
-                        SelectedItem="{Binding Month}"
-                        ItemDisplayBinding="{Binding Value}" />
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="12">
+                        <!-- Month Picker -->
+                        <material:PickerField Grid.Column="0"
+                                              x:Name="MonthPicker"
+                                              Title="Month"
+                                              ItemsSource="{Binding Months}"
+                                              SelectedItem="{Binding Month}"
+                                              ItemDisplayBinding="{Binding Value}" />
 
-                <!-- Year Picker -->
-                <Picker x:Name="YearPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Years}"                        
-                        SelectedItem="{Binding Year}"
-                        ItemDisplayBinding="{Binding Value}" />
-            </HorizontalStackLayout>
+                        <!-- Year Picker -->
+                        <material:PickerField Grid.Column="1"
+                                              x:Name="YearPicker"
+                                              Title="Year"
+                                              ItemsSource="{Binding Years}"                        
+                                              SelectedItem="{Binding Year}"
+                                              ItemDisplayBinding="{Binding Value}" />
+                    </Grid>
 
+                    <Button
+                        Text="SAVE"
+                        Command="{Binding SaveCommand}"
+                        CornerRadius="24"
+                        HeightRequest="48"
+                        Margin="0, 16, 0, 0"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White">
+                        <Button.Shadow>
+                            <Shadow Brush="{StaticResource Primary}" Offset="0,4" Radius="8" Opacity="0.3" />
+                        </Button.Shadow>
+                    </Button>
 
-        </VerticalStackLayout>
-
-        <Button
-            Grid.Row="1"
-            Text="Save"
-            HorizontalOptions="Center"
-            VerticalOptions="End"  
-            Command="{Binding SaveCommand}" />
-    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
 </ContentPage>

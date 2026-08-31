@@ -29,9 +29,11 @@ public partial class ExpenseViewModel : BaseViewModel
 
     [ObservableProperty]
     KeyValuePair<int, string> year;
+    partial void OnYearChanged(KeyValuePair<int, string> value) { _ = OnMonthOrYearChanged(); }
 
     [ObservableProperty]
     KeyValuePair<int, string> month;
+    partial void OnMonthChanged(KeyValuePair<int, string> value) { _ = OnMonthOrYearChanged(); }
 
     public ObservableCollection<KeyValuePair<int, string>> Months { get; set; }
     public ObservableCollection<KeyValuePair<int, string>> Years { get; set; }
@@ -143,5 +145,6 @@ public partial class ExpenseViewModel : BaseViewModel
         });
     }
 }
+
 
 

@@ -2,158 +2,166 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     x:Class="TrakQ.View.AccountSheetPage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:AccountSheetPageViewModel"
     Title="{Binding Title}"
-    Padding="20">
+    BackgroundColor="{AppThemeBinding Light=#F5F7FA, Dark=#121212}">
 
-    <Grid
-        ColumnDefinitions="*,*"
-        ColumnSpacing="5"
-        RowDefinitions="Auto,Auto,*,Auto"
-        RowSpacing="0">
-        <Border Grid.Row="0" 
-                Grid.ColumnSpan="2"
-                Padding="5"
-                HorizontalOptions="Center">
-            <HorizontalStackLayout>
+    <Grid>
+        <!-- Main Layout -->
+        <Grid RowDefinitions="Auto, Auto, *" Padding="16">
+            
+            <!-- Header Selectors -->
+            <Border Grid.Row="0"
+                    StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="10">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,2" Radius="6" Opacity="0.05" />
+                </Border.Shadow>
+                <Grid ColumnDefinitions="Auto, *, *, Auto" ColumnSpacing="12">
+                    <!-- Prev Button -->
+                    <Button Grid.Column="0"
+                            Clicked="OnPreviousMonthMOveClicked"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="Transparent"
+                            WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Color="{StaticResource Primary}" Size="18"/>
+                        </Button.ImageSource>
+                    </Button>
 
-                <Button Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="8"
-                        Clicked="OnPreviousMonthMOveClicked"
-                        IsEnabled="{Binding IsNotBusy}">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronLeft}" Size="15"/>
-                    </Button.ImageSource>
-                </Button>
+                    <material:PickerField Grid.Column="1"
+                                          x:Name="MonthPicker"
+                                          Title="Month"
+                                          ItemsSource="{Binding Months}"
+                                          SelectedItem="{Binding Month}" />
+                                          
+                    <material:PickerField Grid.Column="2"
+                                          x:Name="YearPicker"
+                                          Title="Year"
+                                          ItemsSource="{Binding Years}"                        
+                                          SelectedItem="{Binding Year}" />
 
-                <!-- Month Picker -->
-                <Picker x:Name="MonthPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Months}"
-                        SelectedItem="{Binding Month}"
-                        ItemDisplayBinding="{Binding Value}"
-                        SelectedIndexChanged="OnPickerValueChanged" />
+                    <!-- Next Button -->
+                    <Button Grid.Column="3"
+                            Clicked="OnNextMonthMOveClicked"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="Transparent"
+                            WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronRight}" Color="{StaticResource Primary}" Size="18"/>
+                        </Button.ImageSource>
+                    </Button>
+                </Grid>
+            </Border>
+            
+            <!-- Total Labels -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0, 16, 0, 8">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label HorizontalTextAlignment="Start"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray500}"
+                           Text="Opening" />
+                    <Label HorizontalTextAlignment="Start"
+                           FontSize="Title"
+                           FontAttributes="Bold"
+                           TextColor="#E53935"
+                           Text="{Binding TotalOpening, StringFormat='{0:N2}'}" />
+                </VerticalStackLayout>
 
-                <!-- Year Picker -->
-                <Picker x:Name="YearPicker"
-                        Margin="5"
-                        ItemsSource="{Binding Years}"                        
-                        SelectedItem="{Binding Year}"
-                        ItemDisplayBinding="{Binding Value}"
-                        SelectedIndexChanged="OnPickerValueChanged" />
-
-                <Button Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="8"
-                        Clicked="OnNextMonthMOveClicked"
-                        IsEnabled="{Binding IsNotBusy}">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="FASolid" Glyph="{x:Static fa:Solid.ChevronRight}" Size="15"/>
-                    </Button.ImageSource>
-                </Button>
-            </HorizontalStackLayout>
-        </Border>
-
-        <Label
-           Grid.Row="1"
-           Grid.Column="0"
-           HorizontalTextAlignment="Start"
-           FontSize="Medium"
-           Margin="5"
-           TextColor="Red"
-           Text="{Binding TotalOpening, StringFormat='{0:N2}'}" />
-
-        <Label
-           Grid.Row="1"
-           Grid.Column="2"
-           HorizontalTextAlignment="End"
-           FontSize="Medium"
-           Margin="5"
-           TextColor="Green"
-           Text="{Binding TotalClosing, StringFormat='{0:N2}'}" />
-
-        <RefreshView
-            Grid.ColumnSpan="2"
-            Grid.Row="2"
-            Command="{Binding GetAllCommand}"
-            IsRefreshing="{Binding IsRefreshing}">
-
-            <CollectionView
-                ItemsSource="{Binding AccountSheets}"
-                SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout
-                        Orientation="Vertical"
-                        ItemSpacing="4"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:AccountSheetDto">
-                        <Border>
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer 
+                <VerticalStackLayout Grid.Column="1">
+                    <Label HorizontalTextAlignment="End"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray500}"
+                           Text="Closing" />
+                    <Label HorizontalTextAlignment="End"
+                           FontSize="Title"
+                           FontAttributes="Bold"
+                           TextColor="#43A047"
+                           Text="{Binding TotalClosing, StringFormat='{0:N2}'}" />
+                </VerticalStackLayout>
+            </Grid>
+            
+            <!-- List View -->
+            <RefreshView Grid.Row="2"
+                         Command="{Binding GetAllCommand}"
+                         IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView ItemsSource="{Binding AccountSheets}"
+                                SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.Footer>
+                        <ContentView HeightRequest="80" />
+                    </CollectionView.Footer>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:AccountSheetDto">                            
+                            <Border StrokeThickness="0"
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                                    StrokeShape="RoundRectangle 12">
+                                <Border.Shadow>
+                                    <Shadow Brush="Black" Offset="0,2" Radius="4" Opacity="0.08" />
+                                </Border.Shadow>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccountSheetPageViewModel}}, x:DataType=viewmodel:AccountSheetPageViewModel, Path=GoToDetailsCommand}"
                                     CommandParameter="{Binding .}"/>
-                            </Border.GestureRecognizers>
-                            <Grid
-                                Padding="10"
-                                ColumnDefinitions="Auto, *"
-                                RowDefinitions="*,*">
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Grid.RowSpan="2"
-                                    VerticalTextAlignment="Center"
-                                    Text="{Binding AccountName}" />
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    HorizontalTextAlignment="End"
-                                    TextColor="Red"
-                                    Text="{Binding OpeningBalance, StringFormat='{0:N2}'}" />
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    HorizontalTextAlignment="End"
-                                    TextColor="Green"
-                                    Text="{Binding ClosingBalance, StringFormat='{0:N2}'}" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                </Border.GestureRecognizers>
+                                <Grid Padding="16" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                                    <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                           VerticalTextAlignment="Center"
+                                           FontSize="16"
+                                           FontFamily="OpenSansSemibold"
+                                           Text="{Binding AccountName}" 
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"/>
+                                    
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                           HorizontalTextAlignment="End"
+                                           FontSize="14"
+                                           TextColor="#E53935"
+                                           Text="{Binding OpeningBalance, StringFormat='{0:N2}'}" />
+                                           
+                                    <Label Grid.Row="1" Grid.Column="1"
+                                           HorizontalTextAlignment="End"
+                                           FontSize="16"
+                                           FontFamily="OpenSansSemibold"
+                                           TextColor="#43A047"
+                                           Text="{Binding ClosingBalance, StringFormat='{0:N2}'}"
+                                           Margin="0,4,0,0"/>
+                                </Grid>
+                            </Border>                         
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
 
-        </RefreshView>
+        <!-- Floating Action Button (FAB) -->
+        <Button Text="+" 
+                Command="{Binding CreateNewCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                WidthRequest="64" HeightRequest="64" CornerRadius="32"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="24"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                FontSize="32"
+                Padding="0, -5, 0, 0">
+            <Button.Shadow>
+                <Shadow Brush="{StaticResource Primary}" Offset="0,4" Radius="8" Opacity="0.4" />
+            </Button.Shadow>
+        </Button>
 
-        <Button
-            Grid.Row="3"
-            Grid.Column="0"
-            Margin="8"
-            Command="{Binding GetAllCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Get All" />
-
-        <Button
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="8"
-            Command="{Binding CreateNewCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Create new" />
-
-
-        <ActivityIndicator
-            Grid.RowSpan="4"
-            Grid.ColumnSpan="2"
-            HorizontalOptions="Fill"
-            IsRunning="{Binding IsBusy}"
-            IsVisible="{Binding IsBusy}"
-            Color="{StaticResource Primary}"
-            VerticalOptions="Center" />
+        <ActivityIndicator HorizontalOptions="Center"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource Primary}"
+                           VerticalOptions="Center" />
     </Grid>
 </ContentPage>

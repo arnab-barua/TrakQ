@@ -3,89 +3,95 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     x:Class="TrakQ.View.ExpenseHeadPage"
     xmlns:model="clr-namespace:TrakQ.Dto"
     xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
     x:DataType="viewmodel:ExpenseHeadViewModel"
     Title="{Binding Title}"
-    Padding="20">
+    BackgroundColor="{AppThemeBinding Light=#F5F7FA, Dark=#121212}">
 
-    <Grid
-        ColumnDefinitions="*,*"
-        ColumnSpacing="5"
-        RowDefinitions="*,Auto"
-        RowSpacing="0">
-        <RefreshView
-            Grid.ColumnSpan="2"
-            Command="{Binding GetAllCommand}"
-            IsRefreshing="{Binding IsRefreshing}">
+    <Grid>
+        <!-- Main Layout -->
+        <RefreshView Command="{Binding GetAllCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
 
-            <ScrollView>
-                <material:TreeView ItemsSource="{Binding ExpenseHeads}">
-                    <material:TreeView.ItemTemplate>
-                        <DataTemplate x:DataType="model:ExpenseHeadDto">
+            <ScrollView Padding="16">
+                <!-- Spacing so the tree view isn't hidden behind FAB -->
+                <VerticalStackLayout Padding="0,0,0,80">
+                    <Border StrokeThickness="0"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray900}}"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="8">
+                        <Border.Shadow>
+                            <Shadow Brush="Black" Offset="0,2" Radius="4" Opacity="0.08" />
+                        </Border.Shadow>
+                        <material:TreeView ItemsSource="{Binding ExpenseHeads}">
+                            <material:TreeView.ItemTemplate>
+                                <DataTemplate x:DataType="model:ExpenseHeadDto">
 
-                            <Grid ColumnDefinitions="*,Auto,Auto"
-                  Padding="6"
-                  ColumnSpacing="6">
+                                    <Grid ColumnDefinitions="*,Auto,Auto"
+                                          Padding="8"
+                                          ColumnSpacing="8">
 
-                                <VerticalStackLayout>
-                                    <Label
-                                        Text="{Binding Name}"
-                                        FontAttributes="Bold" />
-                                </VerticalStackLayout>
+                                        <VerticalStackLayout VerticalOptions="Center">
+                                            <Label FontSize="16"
+                                                   FontFamily="OpenSansSemibold"
+                                                   TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark=White}"
+                                                   Text="{Binding Name}" />
+                                        </VerticalStackLayout>
 
-                                <Button
-                                    Grid.Column="1"
-                                    Text="+"
-                                    FontAttributes="Bold"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}}, 
-                                                        x:DataType=viewmodel:ExpenseHeadViewModel, Path=AddChildCommand}"
-                                    CommandParameter="{Binding .}"
-                                    />
-                                <!-- Edit -->
-                                <Button
-                                    Grid.Column="2"
-                                    Text="✎"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}},
-                                                      x:DataType=viewmodel:ExpenseHeadViewModel, Path=EditCommand}"
-                                    CommandParameter="{Binding .}" />
+                                        <!-- Add Child -->
+                                        <Button Grid.Column="1"
+                                                Text="+"
+                                                WidthRequest="32" HeightRequest="32" CornerRadius="16" Padding="0"
+                                                BackgroundColor="{StaticResource Secondary}"
+                                                TextColor="White"
+                                                FontAttributes="Bold"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}}, 
+                                                                    x:DataType=viewmodel:ExpenseHeadViewModel, Path=AddChildCommand}"
+                                                CommandParameter="{Binding .}" />
+                                                
+                                        <!-- Edit -->
+                                        <Button Grid.Column="2"
+                                                Text="&#x270E;" 
+                                                WidthRequest="32" HeightRequest="32" CornerRadius="16" Padding="0"
+                                                BackgroundColor="{StaticResource Gray200}"
+                                                TextColor="{StaticResource Gray900}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ExpenseHeadViewModel}},
+                                                                  x:DataType=viewmodel:ExpenseHeadViewModel, Path=EditCommand}"
+                                                CommandParameter="{Binding .}" />
 
-                            </Grid>
+                                    </Grid>
 
-                        </DataTemplate>
-                    </material:TreeView.ItemTemplate>
-                </material:TreeView>
-
+                                </DataTemplate>
+                            </material:TreeView.ItemTemplate>
+                        </material:TreeView>
+                    </Border>
+                </VerticalStackLayout>
             </ScrollView>
-            
         </RefreshView>
 
-        <Button
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="8"
-            Command="{Binding GetAllCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Get All" />
+        <!-- Floating Action Button (FAB) for Root creation -->
+        <Button Text="+" 
+                Command="{Binding CreateAtRootCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                WidthRequest="64" HeightRequest="64" CornerRadius="32"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="24"
+                BackgroundColor="{StaticResource Secondary}"
+                TextColor="White"
+                FontSize="32"
+                Padding="0, -5, 0, 0">
+            <Button.Shadow>
+                <Shadow Brush="{StaticResource Secondary}" Offset="0,4" Radius="8" Opacity="0.4" />
+            </Button.Shadow>
+        </Button>
 
-        <Button
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="8"
-            Command="{Binding CreateAtRootCommand}"
-            IsEnabled="{Binding IsNotBusy}"
-            Text="Add at root" />
-
-
-        <ActivityIndicator
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
-            HorizontalOptions="Fill"
-            IsRunning="{Binding IsBusy}"
-            IsVisible="{Binding IsBusy}"
-            Color="{StaticResource Primary}"
-            VerticalOptions="Center" />
+        <ActivityIndicator HorizontalOptions="Center"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="{StaticResource Primary}"
+                           VerticalOptions="Center" />
     </Grid>
 </ContentPage>
-
