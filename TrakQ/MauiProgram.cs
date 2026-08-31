@@ -4,6 +4,7 @@ using TrakQ.Db;
 using TrakQ.Service;
 using TrakQ.View;
 using UraniumUI;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
 
 namespace TrakQ;
 
@@ -16,6 +17,7 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseUraniumUI()
             .UseUraniumUIMaterial()
+            .UseMauiCompatibility()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -35,3 +37,4 @@ public static class MauiProgram
         return builder.Build();
     }
 }
+
