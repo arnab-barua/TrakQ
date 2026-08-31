@@ -2,34 +2,65 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:TrakQ.ViewModel"
+             xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
              x:DataType="viewmodel:LogsPageViewModel"
              x:Class="TrakQ.View.LogsPage"
              Title="{Binding Title}"
-             Padding="20">
+             BackgroundColor="{AppThemeBinding Light=#F5F7FA, Dark=#121212}">
 
-    <Grid RowDefinitions="*, Auto">
-        <Border Grid.Row="0" Stroke="{StaticResource Primary}" StrokeThickness="1" Margin="0,0,0,10">
-            <ScrollView>
+    <Grid RowDefinitions="*, Auto" Padding="16">
+        
+        <!-- Log Terminal Viewer -->
+        <Border Grid.Row="0" 
+                StrokeThickness="0"
+                BackgroundColor="{AppThemeBinding Light=#1E1E1E, Dark=#000000}"
+                StrokeShape="RoundRectangle 12"
+                Margin="0,0,0,16">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,4" Radius="8" Opacity="0.1" />
+            </Border.Shadow>
+            
+            <ScrollView Padding="16">
                 <Label Text="{Binding LogText}"
-                       Padding="10"
-                       FontSize="Caption"
+                       FontSize="13"
                        FontFamily="Consolas"
+                       TextColor="#A5D6A7"
                        LineBreakMode="CharacterWrap" />
             </ScrollView>
         </Border>
 
-        <HorizontalStackLayout Grid.Row="1" Spacing="10" HorizontalOptions="Center">
-            <Button Text="Refresh" 
+        <!-- Actions -->
+        <Grid Grid.Row="1" ColumnDefinitions="*, *, *" ColumnSpacing="8">
+            <Button Grid.Column="0" 
+                    Text="Refresh" 
                     Command="{Binding LoadLogsCommand}"
-                    IsEnabled="{Binding IsNotBusy}" />
-            <Button Text="Share Logs" 
+                    IsEnabled="{Binding IsNotBusy}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="8">
+                
+            </Button>
+            
+            <Button Grid.Column="1" 
+                    Text="Share" 
                     Command="{Binding ShareLogsCommand}"
-                    IsEnabled="{Binding IsNotBusy}" />
-            <Button Text="Clear" 
+                    IsEnabled="{Binding IsNotBusy}"
+                    BackgroundColor="{StaticResource Secondary}"
+                    TextColor="White"
+                    CornerRadius="8">
+                
+            </Button>
+            
+            <Button Grid.Column="2" 
+                    Text="Clear" 
                     Command="{Binding ClearLogsCommand}"
-                    BackgroundColor="Red"
-                    IsEnabled="{Binding IsNotBusy}" />
-        </HorizontalStackLayout>
+                    BackgroundColor="#E53935"
+                    TextColor="White"
+                    CornerRadius="8"
+                    IsEnabled="{Binding IsNotBusy}">
+                
+            </Button>
+        </Grid>
 
         <ActivityIndicator Grid.RowSpan="2"
                            IsRunning="{Binding IsBusy}"
@@ -40,4 +71,5 @@
     </Grid>
 
 </ContentPage>
+
 

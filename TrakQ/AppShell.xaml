@@ -24,7 +24,7 @@
         <Grid HeightRequest="160" BackgroundColor="{StaticResource Primary}" Padding="20">
             <!-- Modern TrakQ Header -->
             <VerticalStackLayout VerticalOptions="End" Spacing="5">
-                <Border StrokeThickness="0" BackgroundColor="White" WidthRequest="60" HeightRequest="60" CornerRadius="30" HorizontalOptions="Start">
+                <Border StrokeThickness="0" BackgroundColor="White" WidthRequest="60" HeightRequest="60" StrokeShape="RoundRectangle 30" HorizontalOptions="Start">
                     <Label Text="Q" FontSize="32" FontFamily="OpenSansSemibold" TextColor="{StaticResource Secondary}" HorizontalOptions="Center" VerticalOptions="Center" />
                 </Border>
                 <Label Text="TrakQ" FontSize="22" FontFamily="OpenSansSemibold" TextColor="White" Margin="0,5,0,0"/>
@@ -124,5 +124,6 @@
     </FlyoutItem>
 
 </Shell>
+
 
 
