@@ -12,6 +12,24 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+        // Wire up early global exception handlers to capture any startup crash
+        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                ExceptionLoggerService.Log(ex);
+            }
+        };
+
+        TaskScheduler.UnobservedTaskException += (s, e) =>
+        {
+            if (e.Exception is Exception ex)
+            {
+                ExceptionLoggerService.Log(ex);
+            }
+            e.SetObserved();
+        };
+
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()

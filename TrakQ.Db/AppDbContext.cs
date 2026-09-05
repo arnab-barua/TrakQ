@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using TrakQ.Db.Data.Entities;
 
 namespace TrakQ.Db;
 public class AppDbContext : DbContext
 {
-
     public DbSet<ExpenditureHead> ExpenditureHeads { get; set; }
     public DbSet<Expenditure> Expenditures { get; set; }
     public DbSet<FiscalMonth> FiscalMonths { get; set; }
@@ -13,18 +13,28 @@ public class AppDbContext : DbContext
     public DbSet<IncomeHead> IncomeHeads { get; set; }
     public DbSet<Income> Incomes { get; set; }
 
-
     public AppDbContext()
     {
-        
     }
 
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var dbPath = Path.Combine(Constants.DatabasePath);
+        if (!optionsBuilder.IsConfigured)
+        {
+            var connectionStringBuilder = new SqliteConnectionStringBuilder
+            {
+                DataSource = Constants.DatabasePath,
+                Mode = SqliteOpenMode.ReadWriteCreate,
+                Cache = SqliteCacheMode.Shared,
+                DefaultTimeout = 15
+            };
 
-        optionsBuilder.UseSqlite($"Filename = {dbPath}");
+            optionsBuilder.UseSqlite(connectionStringBuilder.ToString());
+        }
         base.OnConfiguring(optionsBuilder);
     }
 }

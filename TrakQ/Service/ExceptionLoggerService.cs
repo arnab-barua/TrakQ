@@ -7,14 +7,15 @@ namespace TrakQ.Service;
 public class ExceptionLoggerService
 {
     private static readonly string LogFileName = "trakq_error_log.txt";
+    private static string StaticLogFilePath => Path.Combine(FileSystem.AppDataDirectory, LogFileName);
     private readonly string _logFilePath;
 
     public ExceptionLoggerService()
     {
-        _logFilePath = Path.Combine(FileSystem.AppDataDirectory, LogFileName);
+        _logFilePath = StaticLogFilePath;
     }
 
-    public void LogException(Exception ex)
+    public static void Log(Exception ex)
     {
         try
         {
@@ -23,12 +24,32 @@ public class ExceptionLoggerService
                              $"INNER EXCEPTION: {ex.InnerException?.Message}{Environment.NewLine}" +
                              new string('-', 80) + Environment.NewLine;
 
-            File.AppendAllText(_logFilePath, logMessage);
+            File.AppendAllText(StaticLogFilePath, logMessage);
         }
         catch
         {
-            // Fail silently if logger itself fails to prevent crash loop
+            // Fail silently to prevent recursive crash
         }
+    }
+
+    public static void Log(string message)
+    {
+        try
+        {
+            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] INFO: {message}{Environment.NewLine}" +
+                             new string('-', 80) + Environment.NewLine;
+
+            File.AppendAllText(StaticLogFilePath, logMessage);
+        }
+        catch
+        {
+            // Fail silently
+        }
+    }
+
+    public void LogException(Exception ex)
+    {
+        Log(ex);
     }
 
     public async Task<string> GetLogsAsync()

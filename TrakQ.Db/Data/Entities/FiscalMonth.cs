@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TrakQ.Db.Data.Entities;
 
-[Index(nameof(Year), nameof(Month), IsUnique = true)]
+[Index(nameof(Year), nameof(Month))]
 public class FiscalMonth
 {
     [Key]

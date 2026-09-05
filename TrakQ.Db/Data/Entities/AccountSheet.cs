@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrakQ.Db.Data.Entities;
 
-[Index(nameof(AccountId), nameof(FiscalMonthId), IsUnique = true)]
+[Index(nameof(AccountId), nameof(FiscalMonthId))]
 public class AccountSheet
 {
     [Key]
